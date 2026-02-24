@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+title: "expl_drift"
+message: "If you use this software, please cite it using the metadata below."
+type: software
+authors:
+  - family-names: Noblitt
+    given-names: Brenden
+repository-code: "https://github.com/brendenmnoblitt/expl_drift"
+license: MIT
+version: "0.1.0"
+date-released: "2026-02-24"

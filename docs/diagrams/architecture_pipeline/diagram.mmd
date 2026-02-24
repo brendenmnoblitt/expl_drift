@@ -1,0 +1,32 @@
+flowchart LR
+  subgraph Data["Data and Model"]
+    B["Baseline data X_b"] --> M["Trained model f(x)"]
+    W["Incoming window X_t"] --> M
+  end
+
+  subgraph Explain["Attribution Generation"]
+    M --> EB["explain_shap(f, X_b, X_b)"]
+    M --> EW["explain_shap(f, X_t, X_b)"]
+    EB --> AB["Baseline attributions A_b"]
+    EW --> AW["Window attributions A_t"]
+  end
+
+  subgraph Detect["Drift Scoring"]
+    AB --> D["DriftDetector"]
+    AW --> D
+    D --> MET["MONITORED_METRICS:<br/>cosine_drift<br/>max_jsd<br/>max_wasserstein"]
+  end
+
+  subgraph Monitor["Tiered Alerting"]
+    CAL["Calibration windows A_cal"] --> DM["DriftMonitor._calibrate()"]
+    MET --> EV["DriftMonitor.evaluate(A_t)"]
+    DM --> TH["Per-metric thresholds:<br/>prewarning, warning, critical"]
+    TH --> EV
+    EV --> AL["AlertLevel: OK | WARNING | CRITICAL"]
+  end
+
+  subgraph Research["Lead-Time Analysis (offline)"]
+    AL --> SERIES["Alert and metric time series"]
+    ACC["Window accuracy series"] --> LT["compute_detection_lead_time:<br/>threshold method"]
+    SERIES --> LT
+  end

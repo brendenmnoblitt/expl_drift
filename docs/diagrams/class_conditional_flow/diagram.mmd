@@ -1,0 +1,19 @@
+flowchart TD
+  IN["Window attributions A_t and predictions yhat_t"] --> PART["Partition by predicted class"]
+
+  subgraph Pooled["Pooled path"]
+    PART --> POOL["All samples"]
+    POOL --> PM["Pooled DriftMonitor.evaluate()"]
+  end
+
+  subgraph PerClass["Per-class path"]
+    PART --> CLS["For each class c in baseline classes"]
+    CLS --> CHK{"Calibrated monitor exists\nand samples >= min_class_samples?"}
+    CHK -->|Yes| CM["Class c DriftMonitor.evaluate()"]
+    CHK -->|No| SKIP["Add c to skipped_classes"]
+  end
+
+  PM --> AGG["Aggregate worst severity\nusing ALERT_SEVERITY"]
+  CM --> AGG
+  SKIP --> OUT
+  AGG --> OUT["Return:<br/>alert_level (worst)<br/>pooled result<br/>per_class results<br/>skipped_classes"]

@@ -1,0 +1,34 @@
+flowchart LR
+  IN["Inputs:<br/>baseline attributions A_b<br/>window attributions A_t"] --> MET["compute_all_metrics(A_b, A_t)"]
+
+  subgraph PM["Production Metrics (Active)"]
+    MET --> M1["cosine_drift"]
+    MET --> M2["max_jsd"]
+    MET --> M3["max_wasserstein"]
+  end
+
+  M1 --> EVAL["DriftMonitor.evaluate(A_t)"]
+  M2 --> EVAL
+  M3 --> EVAL
+
+  CAL["Calibration windows A_cal"] --> TH["Thresholds per metric:<br/>prewarning / warning / critical"]
+  TH --> EVAL
+
+  subgraph SM["Alert State Machine"]
+    OK["OK"] --> WARNING["WARNING"]
+    OK --> OK
+    WARNING --> CRITICAL["CRITICAL"]
+    WARNING --> WARNING
+    WARNING --> OK
+    CRITICAL --> CRITICAL
+    CRITICAL --> WARNING
+    CRITICAL --> OK
+  end
+
+  EVAL --> OK
+
+  OK -. "Any metric >= warning<br/>or trend-based prewarning" .-> WARNING
+  WARNING -. "Metric >= critical and<br/>warning streak >= min_consecutive" .-> CRITICAL
+  WARNING -. "No signal and cooldown<br/>>= warning_clear_consecutive" .-> OK
+  CRITICAL -. "Critical condition drops<br/>or cooldown logic" .-> WARNING
+  CRITICAL -. "No signal and cooldown<br/>>= warning_clear_consecutive" .-> OK
