@@ -16,3 +16,6 @@ wheels/
 
 # Archived files
 monitoring/archive
+
+# UV Lock file
+uv.lock
