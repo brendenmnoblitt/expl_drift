@@ -1,6 +1,6 @@
 # expl_drift
 
-Core library for explanation-drift detection and tiered alerting.
+Core library for explanation-drift detection and tiered alerting. Background, initial experimentation, and results can be found in the paper: _Monitoring Explanation Drift: A Multi-Metric Framework for Early Detection of ML System Degradation_ (review in-progress)
 
 ## Scope
 
@@ -23,8 +23,6 @@ Production alerting metrics:
 
 Archived CUSUM/EWMA experiments are retained as non-runtime reference code only.
 
-See [ALGORITHMS.md](/home/brendenadm/projects/expl_drift/docs/ALGORITHMS.md) for formal definitions.
-
 ## Environment
 
 - Install pinned dependencies with `pip install -r requirements.txt`.
@@ -36,8 +34,8 @@ See [ALGORITHMS.md](/home/brendenadm/projects/expl_drift/docs/ALGORITHMS.md) for
 - [x] Algorithm description matches implementation (`ALGORITHMS.md`).
 - [x] Tiered alert logic documented with state machine diagram (`docs/diagrams/alert_state_machine/diagram.mmd`).
 - [x] Detection metrics and lead-time logic implemented in code.
-- [ ] Repositories committed and tagged for a citable snapshot.
-- [ ] Final manuscript tables/figures frozen to a named run ID.
+- [x] Repositories committed and tagged for a citable snapshot.
+- [x] Final manuscript tables/figures frozen to a named run ID.
 
 ## Key Code References
 
