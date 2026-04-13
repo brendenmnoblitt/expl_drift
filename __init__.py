@@ -24,6 +24,7 @@ if TYPE_CHECKING:
 # Drift detection (core)
 from .drift.detector import DriftDetector
 from .drift.metrics import MONITORED_METRICS, compute_all_metrics
+from .drift.summarize import SUMMARY_FEATURE_NAMES, summarize_attributions
 
 # Monitoring (production alerting + threshold lead-time algorithm)
 from .monitoring import (
@@ -77,6 +78,8 @@ __all__ = [
     "DriftDetector",
     "MONITORED_METRICS",
     "compute_all_metrics",
+    "summarize_attributions",
+    "SUMMARY_FEATURE_NAMES",
     # monitoring
     "AlertLevel",
     "ClassConditionalMonitor",
