@@ -26,6 +26,8 @@ def compute_detection_lead_time(
     accuracy_series: np.ndarray,
     threshold_std: float = 2.0,
     smooth_acc_window: int = 1,
+    drift_baseline: tuple[float, float] | None = None,
+    accuracy_baseline: tuple[float, float] | None = None,
 ) -> int | None:
     """Compute windows between drift flag and accuracy drop.
 
@@ -38,6 +40,11 @@ def compute_detection_lead_time(
         accuracy_series: 1D array of accuracy values per window.
         threshold_std: Number of standard deviations from baseline to set threshold.
         smooth_acc_window: Window size for smoothing accuracy. 1 = no smoothing.
+        drift_baseline: Optional ``(mean, std)`` for the drift metric, computed
+            from a known-clean reference (e.g. a monitor's calibration windows).
+            If omitted, the first ``max(3, len(drift_series)//4)`` windows are
+            used — which contaminates the baseline when drift starts at window 0.
+        accuracy_baseline: Optional ``(mean, std)`` for accuracy, same idea.
     Returns:
         int | None: Lead time in windows, or None if no drift or accuracy drop detected
     """
@@ -48,14 +55,22 @@ def compute_detection_lead_time(
     # use first few windows as "normal" baseline
     n_baseline = max(3, len(drift_arr) // 4)
 
-    drift_mean = np.mean(drift_arr[:n_baseline])
-    drift_std = np.std(drift_arr[:n_baseline]) + 1e-10
+    if drift_baseline is not None:
+        drift_mean, drift_std = drift_baseline
+        drift_std = drift_std + 1e-10
+    else:
+        drift_mean = np.mean(drift_arr[:n_baseline])
+        drift_std = np.std(drift_arr[:n_baseline]) + 1e-10
     drift_threshold = drift_mean + threshold_std * drift_std
 
     # threshold calibrated from RAW accuracy (preserves natural window-to-window variance).
     # detection applied to SMOOTHED accuracy (removes transient single-window dips).
-    acc_mean = np.mean(raw_acc[:n_baseline])
-    acc_std = np.std(raw_acc[:n_baseline]) + 1e-10
+    if accuracy_baseline is not None:
+        acc_mean, acc_std = accuracy_baseline
+        acc_std = acc_std + 1e-10
+    else:
+        acc_mean = np.mean(raw_acc[:n_baseline])
+        acc_std = np.std(raw_acc[:n_baseline]) + 1e-10
     acc_threshold = acc_mean - threshold_std * acc_std
 
     # when drift exceeds threshold, record window index and break
