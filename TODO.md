@@ -9,6 +9,15 @@ This checklist is saved in `expl_drift` for planning. Implementation belongs in
 No image publication or endpoint deployment has been performed as part of
 this plan.
 
+## Research extension roadmap
+
+The [three-week research extension plan](docs/research-extension-plan-2026-10-11.md)
+targets November 1, 2026: corrected data and qualified extraction, a frozen
+measurement protocol, a controlled AG News bridge study, and a corrected
+YouTube second-corpus study. It also defines the clean-repository cutover and
+paper-reproduction gates. Its execution schedule supersedes this historical
+infrastructure checklist; existing paper snapshots remain preserved.
+
 ## Preserve the documented baseline
 
 Keep this work on dedicated `codex/` branches in both repositories. Do not merge
@@ -75,7 +84,10 @@ not a claim that it is the snapshot used by every existing manuscript.
 - [ ] Choose and pin the first model and tokenizer revisions. Start with one
   classifier; qualify CLM after the Laya path works.
 - [ ] Implement Laya loading and extraction through its actual decision head.
-  Verify score parity with its native SDK on a few fixed examples.
+  Verify scores, attribution targets, and token mappings match the declared
+  generation-time quantities. Native-SDK parity is needed only when claiming
+  equivalence to that SDK; it is not a prerequisite for studying the pinned
+  endpoint's own outputs.
 - [ ] Verify attribution extraction supports the selected model and target.
   Preserve gradient access for integrated gradients; advertise only methods
   that have passed qualification.
