@@ -4,7 +4,7 @@ Archived experimental variants (for example CUSUM/EWMA) are intentionally exclud
 
 ## 1) Drift Metric Computation
 
-The detector compares baseline SHAP attributions (`A_base`) against current-window attributions (`A_t`).
+The detector compares finite numeric reference features (`A_base`) against current-window features (`A_t`). Raw signed attributions and fixed-target document summaries are distinct representations; preserve the representation manifest with the fitted numeric state.
 
 Production alerting uses three metrics:
 - `cosine_drift`
@@ -16,6 +16,21 @@ Optional analysis metrics (not used by production alerting) include:
 - `energy_distance`
 - `ks_max_statistic`, `ks_fraction_significant`
 - `classifier_auc`
+
+For the research extension, document summaries have eight fixed columns:
+normalized entropy, Gini, top-k absolute mass concentration, mean/max/std
+absolute attribution, signed mean, and signed mass balance. Explicit document
+masks retain true zeros and exclude non-document segments. Without a mask,
+all positions are retained. Count/truncation are separate input controls.
+
+`FittedMetricState` fits scales and finite histogram edges only on reference
+data. Varying features use population standard deviation without centering;
+constant nonzero features use absolute reference value. Constant-zero features
+map departures to -1/0/+1: support/direction are measurable, departure intensity
+has no learnable reference unit and is deliberately discarded. State is
+JSON-serializable, immutable, reference-array-identified, and fingerprinted.
+Restoration checks the fingerprint and the exact canonical float64 reference
+array. Window evaluation never fits a transform or changes the reference edges.
 
 ```text
 Algorithm: Compute Drift Metrics
@@ -29,16 +44,39 @@ Output:
   metric dictionary D_t
 
 Steps:
-1. For each requested metric in M, compute score(s) from A_base vs A_t:
-   - cosine_drift: cosine distance between mean absolute attribution profiles.
-   - JSD metrics: per-feature histogram JSD, then mean (jsd) or max (max_jsd).
-   - Wasserstein metrics: per-feature Wasserstein distance, then mean (wasserstein)
-     or max (max_wasserstein).
-   - energy_distance: multivariate energy distance.
-   - KS metrics: per-feature KS test, return max statistic and fraction significant.
-   - classifier_auc: logistic classifier AUC for distinguishing baseline vs current.
-2. Return D_t.
+1. Apply the saved reference-only feature transform to A_base and A_t.
+2. For each requested metric in M, compute score(s):
+   - cosine_drift: cosine distance between signed scaled feature means; both
+     zero profiles give 0, exactly one zero profile gives 1.
+   - JSD metrics: reference-fitted per-feature histograms with explicit underflow/
+     overflow bins (reference endpoints stay inside), then mean or max.
+     Constant support uses below/equal/above bins. No pseudo-counts; divergence
+     in natural logs lies in [0, log(2)].
+   - Wasserstein metrics: per-feature distance in fitted reference units, then
+     mean or max; never a raw maximum across heterogeneous feature units.
+   - energy_distance: multivariate energy distance of transformed features.
+   - KS metrics: per-feature KS test on transformed features, returning max
+     statistic and fraction significant.
+   - classifier_auc: logistic classifier AUC using transformed features.
+3. Return D_t.
 ```
+
+The separate `compute_cosine_attribution_drift` API remains an unscaled
+absolute-attribution magnitude-profile diagnostic; it intentionally erases pure
+sign reversals and is not the default signed-summary cosine. Direct JSD and
+Wasserstein score APIs use the same reference fitting as the detector and accept
+reusable `metric_state`. Detector feature drivers expose per-feature JSD,
+normalized Wasserstein, and signed mean shifts without adding alert metrics.
+The monitor includes these diagnostics and the fitted-state fingerprint while
+retaining its three metric names and its existing state machine.
+
+These corrected definitions change historical scores. Preserve paper snapshots
+and raw pilots, and produce a separately labeled saved-array sensitivity bridge
+to the old formulas rather than relabeling historical tables or maintaining a
+second engine. Local behavioral fixtures do not establish real-signal
+qualification or a horizon-level false-alarm guarantee. The threshold calibration
+below still requires complete-detector null tuning/qualification before a frozen
+study may claim comparable false-alarm rates.
 
 ## 2) Stateful Tiered Alerting
 
@@ -86,33 +124,29 @@ Trend-prewarning rule:
 - Total rise over that sequence is at least
   `prewarning_min_delta_std * sigma[m]`.
 
-## 3) Lead-Time Evaluation (Offline)
+## 3) Stateful Event Evaluation (Offline)
 
-Lead time is computed by `compute_detection_lead_time` as a single value for one drift series and one accuracy series.
+`evaluate_stateful_events` consumes actual sequential `DriftMonitor` alert
+states and window accuracies, with explicit stable/evaluation boundaries and
+an independently estimated reference accuracy. It never thresholds a metric
+series to stand in for the monitor.
 
-```text
-Algorithm: Detection Lead Time
+- Detection is the first new WARNING/CRITICAL onset in the evaluation horizon.
+  A stable-period warning carried into evaluation is not credited; the state
+  must clear before another warning can count. Stable warning onsets and the
+  entry state are reported separately.
+- The provisional observed quality event is a drop of at least 0.05 from
+  reference accuracy for two consecutive evaluation windows. Its timestamp is
+  the confirming second window; persistence starts at evaluation entry.
+  Both parameters are explicit caller inputs to be qualified and frozen before G2.
+- Lead time is quality-event timestamp minus detection timestamp. Positive,
+  simultaneous, late, missed, warning-without-event, and neither-event outcomes
+  are all retained. Missing timestamps produce undefined lead time, not zero.
+- The function validates finite accuracies and boundaries. The observed-drop
+  estimand is not evidence of underlying degradation. Group dependence,
+  reference-estimation uncertainty, and horizon-level null-event qualification
+  remain required study-level evidence.
 
-Inputs:
-  drift_series d_1...d_T
-  accuracy_series a_1...a_T
-  threshold_std (default 2.0)
-  smooth_acc_window (default 1)
-
-Steps:
-1. Smooth accuracy with centered rolling mean (window = smooth_acc_window).
-2. Use first n_baseline = max(3, floor(T/4)) windows as baseline.
-3. Drift threshold:
-     tau_d = mean(d_baseline) + threshold_std * std(d_baseline)
-4. Accuracy threshold:
-     tau_a = mean(a_baseline_raw) - threshold_std * std(a_baseline_raw)
-5. Find first indices:
-     t_d   = first i with d_i > tau_d
-     t_acc = first i with smoothed_accuracy_i < tau_a
-6. If either index does not exist, return NA; else return t_acc - t_d.
-```
-
-Interpretation:
-- Positive lead time: drift signal appears before accuracy degradation.
-- Zero lead time: both occur in the same window.
-- Negative lead time: accuracy drops before the drift signal.
+`compute_detection_lead_time` remains the historical threshold-series analysis
+used by preserved experiments. It is not the research extension's event rule;
+do not use its centered smoothing or retrospective thresholds for new claims.

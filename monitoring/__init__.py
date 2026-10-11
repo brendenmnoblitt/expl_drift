@@ -7,6 +7,7 @@ with threshold-based lead-time computation.
 from .alert_level import ALERT_SEVERITY, AlertLevel
 from .algorithms import (
     compute_detection_lead_time,
+    evaluate_stateful_events,
 )
 from .class_conditional import ClassConditionalMonitor
 from .drift_monitor import DriftMonitor
@@ -15,6 +16,7 @@ __all__ = [
     "DriftMonitor",
     "ClassConditionalMonitor",
     "compute_detection_lead_time",
+    "evaluate_stateful_events",
     "AlertLevel",
     "ALERT_SEVERITY",
 ]

@@ -91,3 +91,99 @@ def compute_detection_lead_time(
         return None
 
     return acc_flag - drift_flag
+
+
+def evaluate_stateful_events(
+    alert_levels: list,
+    accuracy_series: np.ndarray,
+    *,
+    reference_accuracy: float,
+    evaluation_start: int,
+    stable_start: int = 0,
+    quality_drop: float = 0.05,
+    quality_persistence: int = 2,
+) -> dict:
+    """Classify actual warning onsets against a sustained observed quality drop.
+
+    Quality is an observed-window estimand, not evidence of underlying
+    degradation. The event timestamp is the confirming window. Quality
+    persistence starts afresh at evaluation entry; monitor state does not.
+    An already active stable-period warning is excluded until it clears and
+    a new warning starts. Inputs must include stable-period alert history;
+    slicing it away would falsely credit a carried warning as shift detection.
+    Null qualification and group-aware reference uncertainty are caller duties.
+    """
+    from .alert_level import AlertLevel
+
+    accuracy = np.asarray(accuracy_series, dtype=float)
+    if accuracy.ndim != 1 or len(accuracy) != len(alert_levels) or not len(accuracy):
+        raise ValueError("alert states and window accuracies must be nonempty and aligned")
+    if not np.isfinite(accuracy).all() or np.any((accuracy < 0) | (accuracy > 1)):
+        raise ValueError("window accuracies must be finite probabilities")
+    if not np.isfinite(reference_accuracy) or not 0 <= reference_accuracy <= 1:
+        raise ValueError("reference accuracy must be a finite probability")
+    if not np.isfinite(quality_drop) or not 0 < quality_drop <= 1:
+        raise ValueError("quality drop must be in (0, 1]")
+    if (
+        isinstance(quality_persistence, bool)
+        or not isinstance(quality_persistence, int) or quality_persistence < 1
+    ):
+        raise ValueError("quality persistence must be a positive integer")
+    if (
+        type(stable_start) is not int or type(evaluation_start) is not int
+        or not 0 <= stable_start <= evaluation_start < len(accuracy)
+    ):
+        raise ValueError("stable and evaluation boundaries must be ordered within the horizon")
+    states = [
+        level if isinstance(level, AlertLevel) else AlertLevel(level) for level in alert_levels
+    ]
+    warning = [level in (AlertLevel.WARNING, AlertLevel.CRITICAL) for level in states]
+    stable_onsets = []
+    detection = None
+    for index in range(stable_start, len(states)):
+        prior_active = warning[index - 1] if index else False
+        if warning[index] and not prior_active:
+            if index < evaluation_start:
+                stable_onsets.append(index)
+            elif detection is None:
+                detection = index
+    quality_event = None
+    streak = 0
+    for index in range(evaluation_start, len(accuracy)):
+        # Comparing drops, rather than a subtracted threshold, includes exactly
+        # five percentage points despite ordinary binary floating-point rounding.
+        drop = reference_accuracy - accuracy[index]
+        qualifies = drop >= quality_drop or np.isclose(drop, quality_drop, rtol=0, atol=1e-12)
+        streak = streak + 1 if qualifies else 0
+        if streak >= quality_persistence:
+            quality_event = index
+            break
+    lead_time = None if detection is None or quality_event is None else quality_event - detection
+    if quality_event is None:
+        outcome = (
+            "warning_without_quality_event" if detection is not None
+            else "no_warning_no_quality_event"
+        )
+    elif detection is None:
+        outcome = "miss"
+    elif lead_time > 0:
+        outcome = "positive_lead"
+    elif lead_time == 0:
+        outcome = "simultaneous"
+    else:
+        outcome = "late_detection"
+    return {
+        "estimand": "sustained_observed_window_accuracy_drop",
+        "detection_timestamp": detection,
+        "quality_event_timestamp": quality_event,
+        "lead_time": lead_time,
+        "outcome": outcome,
+        "stable_warning_onsets": stable_onsets,
+        "warning_active_at_entry": bool(evaluation_start and warning[evaluation_start - 1]),
+        "quality_event_absent": quality_event is None,
+        "detection_absent": detection is None,
+        "evaluation_start": evaluation_start,
+        "reference_accuracy": float(reference_accuracy),
+        "quality_drop": float(quality_drop),
+        "quality_persistence": quality_persistence,
+    }

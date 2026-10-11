@@ -1,6 +1,9 @@
 # Modern-classifier explanation-drift research plan
 
-Status: proposed execution plan, not completed qualification or a promise of positive results.
+Status: implementation started on the execution branches; G1–G5 remain pending.
+The [first-session evidence](research-extension-session-2026-10-11.json) records
+source identities, corrected data, verified development behavior and gate blockers.
+This is not completed qualification or a promise of positive results.
 
 Target delivery: November 1, 2026. Execution window: October 12–November 1.
 

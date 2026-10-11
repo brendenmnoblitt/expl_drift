@@ -18,6 +18,13 @@ YouTube second-corpus study. It also defines the clean-repository cutover and
 paper-reproduction gates. Its execution schedule supersedes this historical
 infrastructure checklist; existing paper snapshots remain preserved.
 
+The [first execution-session evidence](docs/research-extension-session-2026-10-11.json)
+records the execution-branch bases, content-hashed implementation, corrected
+YouTube inventory/candidate allocation, fixed-margin extraction, reference-fitted
+metrics, stateful event evaluation, tests and development smoke runs.
+G1–G5 remain open: task checkpoints, real-runtime qualification/resource approval,
+and a feasible null-evidence budget precede protocol freeze or primary extraction.
+
 ## Preserve the documented baseline
 
 Keep this work on dedicated `codex/` branches in both repositories. Do not merge

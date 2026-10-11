@@ -3,7 +3,13 @@
 import numpy as np
 import pandas as pd
 
-from .metrics import compute_all_metrics
+from .metrics import (
+    FittedMetricState,
+    _feature_array,
+    _per_feature_jsd,
+    _per_feature_wasserstein,
+    compute_all_metrics,
+)
 
 
 class DriftDetector:
@@ -13,13 +19,26 @@ class DriftDetector:
         baseline: (n_samples, n_features) array of baseline attributions.
     """
 
-    def __init__(self, baseline_attributions: np.ndarray) -> None:
-        """Initialize the drift detector with baseline attributions.
-        
-        Args:
-            baseline_attributions: (n_samples, n_features) array of baseline attributions.
+    def __init__(
+        self, baseline_attributions: np.ndarray, *,
+        metric_state: FittedMetricState | None = None,
+        feature_names: tuple[str, ...] | list[str] | None = None,
+        n_bins: int = 20,
+    ) -> None:
+        """Fit once on reference, or restore state for the identical reference.
+
+        Pass summary feature names explicitly when using document summaries.
+        The detector owns a read-only reference copy so caller mutation cannot
+        silently change fitted metric semantics.
         """
-        self.baseline = baseline_attributions
+        self.baseline = _feature_array(baseline_attributions, "baseline").copy()
+        self.baseline.setflags(write=False)
+        self.metric_state = metric_state or FittedMetricState.fit(
+            self.baseline, feature_names=feature_names, n_bins=n_bins,
+        )
+        self.metric_state.validate_reference(self.baseline)
+        if feature_names is not None and tuple(feature_names) != self.metric_state.feature_names:
+            raise ValueError("feature names do not match fitted state")
 
     def evaluate_window(
         self,
@@ -40,7 +59,30 @@ class DriftDetector:
         """
         return compute_all_metrics(
             self.baseline, window_attributions, seed, metrics=metrics,
+            metric_state=self.metric_state,
         )
+
+    def feature_drivers(self, window_attributions: np.ndarray) -> dict[str, dict[str, float]]:
+        """Report each feature's JSD, normalized Wasserstein, and signed mean shift.
+
+        Drivers are diagnostics, not extra monitor metrics or independently
+        calibrated alerts. Their maxima reproduce the corresponding scores.
+        """
+        baseline = self.metric_state.transform(self.baseline)
+        current = self.metric_state.transform(window_attributions)
+        jsd = _per_feature_jsd(
+            self.baseline, window_attributions, metric_state=self.metric_state,
+        )
+        wasserstein = _per_feature_wasserstein(baseline, current)
+        mean_shift = current.mean(axis=0) - baseline.mean(axis=0)
+        return {
+            name: {
+                "jsd": float(jsd[i]),
+                "wasserstein": float(wasserstein[i]),
+                "signed_mean_shift": float(mean_shift[i]),
+            }
+            for i, name in enumerate(self.metric_state.feature_names)
+        }
 
     def evaluate_all_windows(
         self,

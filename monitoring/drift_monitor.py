@@ -237,6 +237,8 @@ class DriftMonitor:
         return {
             "alert_level": alert_level,
             "metrics": metrics,
+            "feature_drivers": self.detector.feature_drivers(window_attributions),
+            "metric_state_fingerprint": self.detector.metric_state.fingerprint,
             "alerts": per_metric,
             "consecutive_warnings": self._consecutive_warnings,
             "consecutive_criticals": self._consecutive_criticals,

@@ -1,5 +1,10 @@
 """Metric functions for quantifying attribution drift."""
 
+import hashlib
+import json
+from dataclasses import dataclass
+from typing import Any
+
 import numpy as np
 from scipy import stats
 from scipy.spatial.distance import cdist, cosine
@@ -8,74 +13,200 @@ from sklearn.model_selection import cross_val_score
 
 MONITORED_METRICS: tuple[str, ...] = ("cosine_drift", "max_jsd", "max_wasserstein")
 
-def _histogram_per_feature(
-    attrs: np.ndarray, n_bins: int, range_vals: list[tuple[float, float]]
-) -> list[np.ndarray]:
-    """Compute normalized histograms per feature. Adds small epsilon to avoid zero bins.
-    
-    Args:
-        attrs: (n_samples, n_features) array of attributions.
-        n_bins: Number of histogram bins.
-        range_vals: List of (min, max) tuples for each feature to define histogram range.
-    Returns:
-        list[np.ndarray]: List of length n_features, each element is a (n_bins,) array
-            of normalized histogram values.
+def _feature_array(values: np.ndarray, name: str) -> np.ndarray:
+    values = np.asarray(values, dtype=float)
+    if values.ndim != 2 or 0 in values.shape or not np.isfinite(values).all():
+        raise ValueError(f"{name} must be a nonempty finite two-dimensional array")
+    return values
+
+
+def _reference_identity(reference: np.ndarray) -> str:
+    canonical = np.ascontiguousarray(reference, dtype="<f8")
+    digest = hashlib.sha256()
+    digest.update(json.dumps(list(canonical.shape)).encode())
+    digest.update(canonical.tobytes())
+    return digest.hexdigest()
+
+
+def _histogram(values: np.ndarray, edges: tuple[float, ...]) -> np.ndarray:
+    """Keep underflow/overflow explicitly; include both endpoints in support."""
+    lo, hi = edges[0], edges[-1]
+    if len(edges) == 1:
+        counts = np.array([np.sum(values < lo), np.sum(values == lo), np.sum(values > lo)])
+    else:
+        interior, _ = np.histogram(values[(values >= lo) & (values <= hi)], bins=edges)
+        counts = np.concatenate(([np.sum(values < lo)], interior, [np.sum(values > hi)]))
+    return counts.astype(float) / len(values)
+
+
+@dataclass(frozen=True)
+class FittedMetricState:
+    """Immutable reference-only scaling, histogram support, and provenance.
+
+    Varying features use reference population standard deviation (no centering,
+    so signed means retain direction). Constant nonzero features use absolute
+    reference value. A constant-zero feature has no identifiable magnitude
+    unit: transform its departures to -1/0/+1, detecting support/direction but
+    deliberately not departure intensity. All saved values are JSON finite.
     """
-    epsilon = 1e-10
-    n_features = attrs.shape[1]
-    hists: list[np.ndarray] = []
-    for f in range(n_features):
-        hist, _ = np.histogram(attrs[:, f], bins=n_bins, range=range_vals[f])
-        hist = hist.astype(float) + epsilon
-        hist /= hist.sum()
-        hists.append(hist)
-    return hists
+
+    reference_id: str
+    feature_names: tuple[str, ...]
+    scales: tuple[float, ...]
+    constant_zero: tuple[bool, ...]
+    bin_edges: tuple[tuple[float, ...], ...]
+    reference_histograms: tuple[tuple[float, ...], ...]
+    n_bins: int
+
+    @classmethod
+    def fit(
+        cls, reference: np.ndarray, *, n_bins: int = 20,
+        feature_names: tuple[str, ...] | list[str] | None = None,
+    ) -> "FittedMetricState":
+        reference = _feature_array(reference, "reference")
+        if (
+            isinstance(n_bins, bool | np.bool_)
+            or not isinstance(n_bins, int | np.integer) or n_bins < 1
+        ):
+            raise ValueError("n_bins must be a positive integer")
+        names = tuple(feature_names) if feature_names is not None else tuple(
+            f"feature_{i}" for i in range(reference.shape[1])
+        )
+        if len(names) != reference.shape[1] or len(set(names)) != len(names) or not all(
+            isinstance(name, str) and name for name in names
+        ):
+            raise ValueError(
+                "feature_names must be unique nonempty names matching the feature count"
+            )
+        constant = np.all(reference == reference[0], axis=0)
+        zero = constant & (reference[0] == 0)
+        scales = np.where(
+            constant, np.where(zero, 1.0, np.abs(reference[0])), reference.std(axis=0)
+        )
+        if not np.isfinite(scales).all() or np.any(scales <= 0):
+            raise ValueError("reference scaling overflowed or underflowed; rescale the input")
+        normalized = reference / scales
+        if not np.isfinite(normalized).all():
+            raise ValueError("reference transform overflowed; rescale the input")
+        edges = tuple(
+            (float(column[0]),) if constant[i] else tuple(
+                float(value) for value in np.linspace(column.min(), column.max(), n_bins + 1)
+            )
+            for i, column in enumerate(normalized.T)
+        )
+        if any(len(edge) > 1 and np.any(np.diff(edge) <= 0) for edge in edges):
+            raise ValueError("reference histogram edges are not numerically distinct")
+        histograms = tuple(
+            tuple(_histogram(column, edge)) for column, edge in zip(normalized.T, edges)
+        )
+        return cls(
+            _reference_identity(reference), names, tuple(float(s) for s in scales),
+            tuple(bool(z) for z in zero), edges, histograms, int(n_bins),
+        )
+
+    def transform(self, values: np.ndarray) -> np.ndarray:
+        values = _feature_array(values, "features")
+        if values.shape[1] != len(self.scales):
+            raise ValueError("feature count does not match fitted state")
+        normalized = values / self.scales
+        for i, zero in enumerate(self.constant_zero):
+            if zero:
+                normalized[:, i] = np.sign(values[:, i])
+        if not np.isfinite(normalized).all():
+            raise ValueError("feature transform overflowed; rescale the input")
+        return normalized
+
+    def validate_reference(self, reference: np.ndarray) -> None:
+        reference = _feature_array(reference, "reference")
+        if _reference_identity(reference) != self.reference_id:
+            raise ValueError("reference array identity does not match fitted state")
+
+    def _payload(self) -> dict[str, Any]:
+        return {
+            "version": 1, "reference_id": self.reference_id,
+            "feature_names": list(self.feature_names), "scales": list(self.scales),
+            "constant_zero": list(self.constant_zero),
+            "bin_edges": [list(edge) for edge in self.bin_edges],
+            "reference_histograms": [list(hist) for hist in self.reference_histograms],
+            "n_bins": self.n_bins,
+        }
+
+    @property
+    def fingerprint(self) -> str:
+        encoded = json.dumps(
+            self._payload(), sort_keys=True, separators=(",", ":"), allow_nan=False
+        )
+        return hashlib.sha256(encoded.encode()).hexdigest()
+
+    def to_dict(self) -> dict[str, Any]:
+        return {**self._payload(), "fingerprint": self.fingerprint}
+
+    @classmethod
+    def from_dict(cls, saved: dict[str, Any]) -> "FittedMetricState":
+        if saved.get("version") != 1:
+            raise ValueError("unsupported fitted metric state version")
+        try:
+            state = cls(
+                saved["reference_id"], tuple(saved["feature_names"]), tuple(saved["scales"]),
+                tuple(saved["constant_zero"]), tuple(tuple(e) for e in saved["bin_edges"]),
+                tuple(tuple(h) for h in saved["reference_histograms"]), saved["n_bins"],
+            )
+            if state.fingerprint != saved["fingerprint"]:
+                raise ValueError("fitted metric state fingerprint mismatch")
+            size = len(state.feature_names)
+            if (
+                size == 0 or len(set(state.feature_names)) != size
+                or not all(isinstance(name, str) and name for name in state.feature_names)
+                or not isinstance(state.n_bins, int) or isinstance(state.n_bins, bool)
+                or state.n_bins < 1
+                or len(state.scales) != size or len(state.constant_zero) != size
+                or len(state.bin_edges) != size or len(state.reference_histograms) != size
+                or not np.isfinite(state.scales).all() or np.any(np.asarray(state.scales) <= 0)
+                or not all(type(zero) is bool for zero in state.constant_zero)
+                or not isinstance(state.reference_id, str) or len(state.reference_id) != 64
+            ):
+                raise ValueError("invalid fitted metric state dimensions or scaling")
+            for edge, histogram in zip(state.bin_edges, state.reference_histograms):
+                if (
+                    len(edge) not in (1, state.n_bins + 1) or not np.isfinite(edge).all()
+                    or np.any(np.diff(edge) <= 0)
+                    or len(histogram) != (3 if len(edge) == 1 else state.n_bins + 2)
+                    or not np.isfinite(histogram).all() or np.any(np.asarray(histogram) < 0)
+                    or not np.isclose(sum(histogram), 1)
+                ):
+                    raise ValueError("invalid fitted histogram support")
+            return state
+        except (KeyError, TypeError, OverflowError) as error:
+            raise ValueError("invalid fitted metric state") from error
+
 
 def _per_feature_jsd(
-    baseline_attrs: np.ndarray, current_attrs: np.ndarray, n_bins: int = 20
+    baseline_attrs: np.ndarray, current_attrs: np.ndarray, n_bins: int = 20,
+    *, metric_state: FittedMetricState | None = None,
 ) -> np.ndarray:
-    """Compute JSD per feature. Returns array of shape (n_features,).
-    
-    Args:
-        baseline_attrs: (n_samples, n_features) array of baseline attributions.
-        current_attrs: (n_samples, n_features) array of current attributions.
-        n_bins: Number of bins to use for histogram estimation.
-        
-    Returns:
-        np.ndarray: Array of shape (n_features,) containing JSD values for each feature.
-    """
-    baseline_attrs = np.asarray(baseline_attrs)
-    current_attrs = np.asarray(current_attrs)
-    n_features = baseline_attrs.shape[1]
-
-    range_vals: list[tuple[float, float]] = []
-    for f in range(n_features):
-        lo = min(baseline_attrs[:, f].min(), current_attrs[:, f].min())
-        hi = max(baseline_attrs[:, f].max(), current_attrs[:, f].max())
-        if lo == hi:
-            hi = lo + 1.0
-        range_vals.append((lo, hi))
-
-    base_hists = _histogram_per_feature(baseline_attrs, n_bins, range_vals)
-    curr_hists = _histogram_per_feature(current_attrs, n_bins, range_vals)
-
-    jsd_values: list[float] = []
-    for b, c in zip(base_hists, curr_hists):
-        m = 0.5 * (b + c)
-        jsd = 0.5 * stats.entropy(b, m) + 0.5 * stats.entropy(c, m)
-        jsd_values.append(jsd)
-
-    return np.array(jsd_values)
+    """Reference-fitted histogram JSD in nats, with explicit outlier bins."""
+    state = metric_state or FittedMetricState.fit(baseline_attrs, n_bins=n_bins)
+    state.validate_reference(baseline_attrs)
+    current = state.transform(current_attrs)
+    values = []
+    for baseline, column, edge in zip(state.reference_histograms, current.T, state.bin_edges):
+        histogram = _histogram(column, edge)
+        mixture = 0.5 * (np.asarray(baseline) + histogram)
+        values.append(
+            0.5 * stats.entropy(baseline, mixture) + 0.5 * stats.entropy(histogram, mixture)
+        )
+    return np.clip(values, 0.0, np.log(2))
 
 
 def compute_jsd(
-    baseline_attrs: np.ndarray, current_attrs: np.ndarray, n_bins: int = 20
+    baseline_attrs: np.ndarray, current_attrs: np.ndarray, n_bins: int = 20,
+    *, metric_state: FittedMetricState | None = None,
 ) -> float:
     """Per-feature Jensen-Shannon divergence, averaged across features.
 
-    Binned, non-parametric measure of distributional shift. More stable than
-    KS statistic for small samples, but less sensitive to subtle shape changes
-    than Wasserstein distance.
+    Histogram edges are fitted on baseline alone and never updated from the
+    monitored window. Explicit below/above-support bins retain outlier mass.
+    The natural-log divergence lies in [0, log(2)] without pseudo-counts.
 
     Args:
         baseline_attrs: (n_samples, n_features) array of baseline attributions.
@@ -84,11 +215,14 @@ def compute_jsd(
     Returns:
         float: Average JSD across features.
     """
-    return float(np.mean(_per_feature_jsd(baseline_attrs, current_attrs, n_bins)))
+    return float(np.mean(_per_feature_jsd(
+        baseline_attrs, current_attrs, n_bins, metric_state=metric_state,
+    )))
 
 
 def compute_max_jsd(
-    baseline_attrs: np.ndarray, current_attrs: np.ndarray, n_bins: int = 20
+    baseline_attrs: np.ndarray, current_attrs: np.ndarray, n_bins: int = 20,
+    *, metric_state: FittedMetricState | None = None,
 ) -> float:
     """Maximum per-feature JSD — captures drift in any single feature.
     
@@ -99,7 +233,9 @@ def compute_max_jsd(
     Returns:
         float: Maximum JSD across features.
     """
-    return float(np.max(_per_feature_jsd(baseline_attrs, current_attrs, n_bins)))
+    return float(np.max(_per_feature_jsd(
+        baseline_attrs, current_attrs, n_bins, metric_state=metric_state,
+    )))
 
 
 def compute_cosine_attribution_drift(
@@ -117,17 +253,42 @@ def compute_cosine_attribution_drift(
     Returns:
         float: Cosine distance between mean |attribution| vectors.
     """
-    baseline_attrs = np.asarray(baseline_attrs)
-    current_attrs = np.asarray(current_attrs)
+    baseline_attrs = _feature_array(baseline_attrs, "baseline")
+    current_attrs = _feature_array(current_attrs, "current")
+    if baseline_attrs.shape[1] != current_attrs.shape[1]:
+        raise ValueError("baseline and current feature counts must match")
+    return _cosine_profiles(
+        np.mean(np.abs(baseline_attrs), axis=0),
+        np.mean(np.abs(current_attrs), axis=0),
+    )
 
-    base_profile = np.mean(np.abs(baseline_attrs), axis=0)
-    curr_profile = np.mean(np.abs(current_attrs), axis=0)
 
-    # Handle edge case of zero vectors
-    if np.allclose(base_profile, 0) or np.allclose(curr_profile, 0):
-        return 0.0
+def _cosine_profiles(baseline: np.ndarray, current: np.ndarray) -> float:
+    base_zero = np.all(baseline == 0)
+    current_zero = np.all(current == 0)
+    if base_zero or current_zero:
+        return 0.0 if base_zero and current_zero else 1.0
+    # Rescale profiles to avoid norm overflow and preserve very small directions.
+    baseline = baseline / np.max(np.abs(baseline))
+    current = current / np.max(np.abs(current))
+    return float(np.clip(cosine(baseline, current), 0.0, 2.0))
 
-    return float(cosine(base_profile, curr_profile))
+
+def compute_cosine_feature_drift(
+    baseline: np.ndarray, current: np.ndarray, *,
+    metric_state: FittedMetricState | None = None,
+) -> float:
+    """Signed mean-profile cosine using reference-fitted feature scales.
+
+    Unlike the raw magnitude diagnostic ``compute_cosine_attribution_drift``,
+    this default detector score does not erase sign flips. Both zero means
+    give zero distance; exactly one zero mean gives distance one.
+    """
+    state = metric_state or FittedMetricState.fit(baseline)
+    state.validate_reference(baseline)
+    return _cosine_profiles(
+        state.transform(baseline).mean(axis=0), state.transform(current).mean(axis=0)
+    )
 
 
 def _per_feature_wasserstein(
@@ -157,12 +318,12 @@ def _per_feature_wasserstein(
 
 
 def compute_wasserstein_drift(
-    baseline_attrs: np.ndarray, current_attrs: np.ndarray
+    baseline_attrs: np.ndarray, current_attrs: np.ndarray,
+    *, metric_state: FittedMetricState | None = None,
 ) -> float:
-    """Mean per-feature Wasserstein (Earth Mover's) distance.
+    """Mean Wasserstein distance in reference-fitted feature units.
 
-    Non-parametric, no binning needed. More sensitive than JSD for
-    detecting shifts in distribution shape.
+    Constant-zero departures use the documented sign-support transform.
 
     Args:
         baseline_attrs: (n_samples, n_features) array of baseline attributions.
@@ -170,13 +331,18 @@ def compute_wasserstein_drift(
     Returns:
         float: Average Wasserstein distance across features.
     """
-    return float(np.mean(_per_feature_wasserstein(baseline_attrs, current_attrs)))
+    state = metric_state or FittedMetricState.fit(baseline_attrs)
+    state.validate_reference(baseline_attrs)
+    return float(np.mean(_per_feature_wasserstein(
+        state.transform(baseline_attrs), state.transform(current_attrs),
+    )))
 
 
 def compute_max_wasserstein_drift(
-    baseline_attrs: np.ndarray, current_attrs: np.ndarray
+    baseline_attrs: np.ndarray, current_attrs: np.ndarray,
+    *, metric_state: FittedMetricState | None = None,
 ) -> float:
-    """Maximum per-feature Wasserstein distance.
+    """Maximum per-feature Wasserstein in reference-fitted units.
     
     Args:
         baseline_attrs: (n_samples, n_features) array of baseline attributions.
@@ -184,7 +350,11 @@ def compute_max_wasserstein_drift(
     Returns:
         float: Maximum Wasserstein distance across features.
     """
-    return float(np.max(_per_feature_wasserstein(baseline_attrs, current_attrs)))
+    state = metric_state or FittedMetricState.fit(baseline_attrs)
+    state.validate_reference(baseline_attrs)
+    return float(np.max(_per_feature_wasserstein(
+        state.transform(baseline_attrs), state.transform(current_attrs),
+    )))
 
 
 def compute_energy_distance(
@@ -285,14 +455,16 @@ def compute_all_metrics(
     seed: int | None = None,
     *,
     metrics: tuple[str, ...] | None = None,
+    metric_state: FittedMetricState | None = None,
 ) -> dict[str, float]:
-    """Compute drift metrics. Returns dict of metric_name -> score.
+    """Compute signed, reference-scaled drift scores with fixed reference JSD edges.
 
     Args:
         baseline: (n_samples, n_features) array of baseline attributions.
         current: (n_samples, n_features) array of current attributions.
         seed: Random seed for reproducibility (used in classifier metric).
         metrics: Optional tuple of metric names to compute. If None, computes all metrics.
+        metric_state: Reusable reference-only fitted transform and histogram state.
     Returns:
         dict[str, float]: Dictionary mapping metric names to their computed scores.
     """
@@ -308,37 +480,43 @@ def compute_all_metrics(
         "classifier_auc",
     )
     requested = set(all_metrics if metrics is None else metrics)
+    if requested - set(all_metrics):
+        raise ValueError(f"unknown metrics: {sorted(requested - set(all_metrics))}")
+    state = metric_state or FittedMetricState.fit(baseline)
+    state.validate_reference(baseline)
+    scaled_baseline = state.transform(baseline)
+    scaled_current = state.transform(current)
     result: dict[str, float] = {}
 
     if "cosine_drift" in requested:
         result["cosine_drift"] = float(
-            compute_cosine_attribution_drift(baseline, current)
+            _cosine_profiles(scaled_baseline.mean(axis=0), scaled_current.mean(axis=0))
         )
 
     if "energy_distance" in requested:
-        result["energy_distance"] = float(compute_energy_distance(baseline, current))
+        result["energy_distance"] = float(compute_energy_distance(scaled_baseline, scaled_current))
 
     if "classifier_auc" in requested:
         result["classifier_auc"] = float(
-            compute_classifier_drift(baseline, current, seed)
+            compute_classifier_drift(scaled_baseline, scaled_current, seed)
         )
 
     if "jsd" in requested or "max_jsd" in requested:
-        jsd_values = _per_feature_jsd(baseline, current)
+        jsd_values = _per_feature_jsd(baseline, current, metric_state=state)
         if "jsd" in requested:
             result["jsd"] = float(np.mean(jsd_values))
         if "max_jsd" in requested:
             result["max_jsd"] = float(np.max(jsd_values))
 
     if "wasserstein" in requested or "max_wasserstein" in requested:
-        distances = _per_feature_wasserstein(baseline, current)
+        distances = _per_feature_wasserstein(scaled_baseline, scaled_current)
         if "wasserstein" in requested:
             result["wasserstein"] = float(np.mean(distances))
         if "max_wasserstein" in requested:
             result["max_wasserstein"] = float(np.max(distances))
 
     if "ks_max_statistic" in requested or "ks_fraction_significant" in requested:
-        ks_max, ks_frac = compute_ks_statistic(baseline, current)
+        ks_max, ks_frac = compute_ks_statistic(scaled_baseline, scaled_current)
         if "ks_max_statistic" in requested:
             result["ks_max_statistic"] = float(ks_max)
         if "ks_fraction_significant" in requested:

@@ -23,7 +23,12 @@ if TYPE_CHECKING:
 
 # Drift detection (core)
 from .drift.detector import DriftDetector
-from .drift.metrics import MONITORED_METRICS, compute_all_metrics
+from .drift.metrics import (
+    FittedMetricState,
+    MONITORED_METRICS,
+    compute_all_metrics,
+    compute_cosine_feature_drift,
+)
 from .drift.summarize import SUMMARY_FEATURE_NAMES, summarize_attributions
 
 # Monitoring (production alerting + threshold lead-time algorithm)
@@ -32,6 +37,7 @@ from .monitoring import (
     ClassConditionalMonitor,
     DriftMonitor,
     compute_detection_lead_time,
+    evaluate_stateful_events,
 )
 
 # Explanations (XAI algorithms)
@@ -76,6 +82,8 @@ __version__ = "0.1.0"
 __all__ = [
     # drift
     "DriftDetector",
+    "FittedMetricState",
+    "compute_cosine_feature_drift",
     "MONITORED_METRICS",
     "compute_all_metrics",
     "summarize_attributions",
@@ -85,6 +93,7 @@ __all__ = [
     "ClassConditionalMonitor",
     "DriftMonitor",
     "compute_detection_lead_time",
+    "evaluate_stateful_events",
     # explanations
     "explain_shap",
     "explain_lime",
