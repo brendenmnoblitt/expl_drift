@@ -22,8 +22,15 @@ The [first execution-session evidence](docs/research-extension-session-2026-10-1
 records the execution-branch bases, content-hashed implementation, corrected
 YouTube inventory/candidate allocation, fixed-margin extraction, reference-fitted
 metrics, stateful event evaluation, tests and development smoke runs.
-G1–G5 remain open: task checkpoints, real-runtime qualification/resource approval,
-and a feasible null-evidence budget precede protocol freeze or primary extraction.
+G1–G5 remain open: real-runtime qualification/resource approval and a feasible
+null-evidence budget precede protocol freeze or primary extraction.
+
+The [checkpoint-preparation continuation](docs/research-extension-checkpoints-2026-10-11.json)
+records pinned AG News and current-schema YouTube inventories, source-constrained
+candidate schedules, four newly trained task checkpoints and saved-checkpoint
+development replay. These are new baselines, not recovered paper weights.
+Laya task qualification, complete G1 case coverage, and the null-budget/protocol
+decisions remain prerequisites; held-out model outcomes stay sealed.
 
 ## Preserve the documented baseline
 

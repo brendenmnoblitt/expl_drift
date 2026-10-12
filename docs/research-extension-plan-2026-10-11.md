@@ -3,6 +3,9 @@
 Status: implementation started on the execution branches; G1–G5 remain pending.
 The [first-session evidence](research-extension-session-2026-10-11.json) records
 source identities, corrected data, verified development behavior and gate blockers.
+The [checkpoint-preparation continuation](research-extension-checkpoints-2026-10-11.json)
+adds pinned AG News, current-schema role/schedule artifacts, four new task
+checkpoints and proper quality-measure implementation. G1–G5 are not closed.
 This is not completed qualification or a promise of positive results.
 
 Target delivery: November 1, 2026. Execution window: October 12–November 1.
@@ -83,11 +86,11 @@ If the Oct 18 gate fails, publish the exact failed prerequisite and revised comp
 
 ### Work
 
-- [ ] Decode the YouTube CSVs as UTF-8, retaining source text other than documented normalization. Pin the archive checksum and record source-to-input transformations.
-- [ ] Resolve duplicate source IDs, identify exact-text/template groups, inspect conflicting labels, and preserve the source-video grouping. Save a machine-readable exclusion/group manifest.
+- [x] Decode the YouTube CSVs as UTF-8, retaining source text other than documented normalization. Pin the archive checksum and record source-to-input transformations.
+- [x] Resolve duplicate source IDs, identify exact-text/template groups, inspect conflicting labels, and preserve the source-video grouping. Save a machine-readable exclusion/group manifest.
 - [ ] Build explicit training, reference/feature-fitting, calibration, threshold-tuning, held-out stable, and shifted evaluation roles. Keep duplicate/template groups out of incompatible roles across all schedules; prevent duplicate source groups across windows within a schedule except deliberately recorded paired controls. Record any permitted reference/calibration overlap and keep both separate from threshold-tuning and held-out evaluation.
 - [ ] Hash the dataset, text, labels, sample/group IDs, window membership, task schema, and transformations. Save immutable sampling schedules before extraction.
-- [ ] Recover and identify the earlier AG News reference checkpoints or train new ones using only the designated training split. Record tokenizer, weights, training settings, and checkpoint hashes. Newly trained checkpoints are new baselines, not reproductions of the old weights.
+- [x] Recover and identify the earlier AG News reference checkpoints or train new ones using only the designated training split. Record tokenizer, weights, training settings, and checkpoint hashes. Newly trained checkpoints are new baselines, not reproductions of the old weights.
 - [ ] Qualify Laya on the actual AG News four-candidate task and YouTube binary task, rather than extrapolating from sentiment examples. Freeze instructions, candidate IDs/order/descriptions, token budget, precision, pooling, SDK and tokenizer revisions.
 - [ ] Save raw logits/decision quantities, probabilities, attribution target, input and baseline target values, signed token values, token segments, truncation, completeness residual, actual gradient evaluations, latency, and runtime identity.
 - [ ] Compare the reported score path with the attributed function on identical inputs. Use normal, ambiguous, long/truncated, short, and both-class/multiclass examples. Candidate-logit completeness alone does not qualify probability or margin explanation.
@@ -129,7 +132,7 @@ A versioned protocol/configuration records all targets, representations, fitted 
 
 ### Work
 
-- [ ] Pin the AG News revision, labels and text construction. Use only the training split for training references; reserve grouped portions of the held-out split for tuning and final evaluation.
+- [x] Pin the AG News revision, labels and text construction. Use only the training split for training references; reserve grouped portions of the held-out split for tuning and final evaluation.
 - [ ] Run the three fixed classifiers on the same text/label/window schedules, with matched document visibility where practical. Account for Laya's instruction/candidate overhead: equal total token limits do not imply equal retained document lengths. Report residual visibility differences and truncation-stratified results.
 - [ ] Required conditions: held-out no shift; class-prior shift without label corruption; a within-class, length-controlled text shift; and a label-only negative control on identical inputs. Prefer graded exposure to a frozen, label-preserving transformation rather than changing its definition after viewing outcomes.
 - [ ] Select and audit the length-controlled transformation on development data. Save exact edits, token-length changes and label-preservation evidence. Harmful performance changes are measured, not assumed; a shift without degradation is a valid specificity case.
@@ -148,7 +151,7 @@ All frozen AG News cells are complete, including null controls and qualified emb
 ### Work
 
 - [ ] Use the corrected/group-aware corpus from Task 1. Save the exclusions and the resulting effective counts by class and source video.
-- [ ] Produce separate binary-task BERT/GPT-2 reference checkpoints with training groups excluded from evaluation. The old four-class AG News heads cannot simply be relabeled ham/spam. Laya's zero-shot task schema is fixed and its different training regime is disclosed.
+- [x] Produce separate binary-task BERT/GPT-2 reference checkpoints with training groups excluded from evaluation. The old four-class AG News heads cannot simply be relabeled ham/spam. Laya's zero-shot task schema is fixed and its different training regime is disclosed.
 - [ ] Provisional allocation: 300 unique training examples, 200 separate threshold-tuning examples, and a 1,000-source-example bank partitioned by the role table below. The bank includes reference/calibration and held-out roles, not 1,000 shifted evaluation examples. Confirm every role's class/group feasibility before G2; do not promise 20 disjoint 100-example windows from this small deduplicated corpus. Training quality is measured, not guaranteed.
 - [ ] Save the final allocation table with actual unique source-example and duplicate/template-group counts by class and video for every role, exclusions and all permitted reuse. Freeze role membership across schedules; resampling may change window placement within a role but cannot move groups between incompatible roles. Distinguish source texts from transformed variants and pair variants with their source role/group.
 - [ ] Decide explicitly whether source video is a role-disjoint holdout unit or a retained grouping/uncertainty variable. Duplicate/template-disjoint roles do not imply video-disjoint roles. Record videos per role and bound the generalization claim accordingly; any video-held-out design must pass allocation feasibility with only five videos.

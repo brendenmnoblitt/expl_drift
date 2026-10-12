@@ -1,0 +1,1320 @@
+{
+  "artifact_boundaries": {
+    "checkpoints_not_committed": true,
+    "corrected_qualification": "/home/n0b/projects/expl_drift_experiments/results/research-extension-data/task-qualification-v2",
+    "failed_banks_preserved": true,
+    "held_out_model_evaluations": 0,
+    "historical_pilot_results_not_staged": true,
+    "initial_failed_qualification": "/home/n0b/projects/expl_drift_experiments/results/research-extension-data/task-qualification",
+    "new_publication_or_deployment": false,
+    "old_sources_not_accepted_for_corrected_resume": true,
+    "paid_jobs": false,
+    "primary_protocol_frozen": false,
+    "raw_data_and_signals_not_committed": true
+  },
+  "base_sources": {
+    "bert": {
+      "checkpoint": "/home/n0b/projects/expl_drift_experiments/results/models/research-extension-bases/models--google-bert--bert-base-uncased/snapshots/86b5e0934494bd15c9632b12f734a8a67f723594",
+      "repo_id": "google-bert/bert-base-uncased",
+      "revision": "86b5e0934494bd15c9632b12f734a8a67f723594",
+      "sha256": "8ed572a9e0fb6733d14a9fd45f772985e03d91c02786c73ba67c2361ea895b85"
+    },
+    "gpt2": {
+      "checkpoint": "/home/n0b/projects/expl_drift_experiments/results/models/research-extension-bases/models--openai-community--gpt2/snapshots/607a30d783dfa663caf39e06633721c8d4cfcd7e",
+      "repo_id": "openai-community/gpt2",
+      "revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+      "sha256": "6bf503862eb6f284a1d67397526ec58c0928a33ec2f1f1af085c969f787321a0"
+    }
+  },
+  "checkpoint_cpu_replay": {
+    "bert-ag_news": {
+      "atol": 2e-05,
+      "checkpoint_sha256": "85baa52c59f8e6ee13b2c77034431c1638ed02ec60d34beed4069166c2dac8ec",
+      "development_replay": {
+        "accuracy": 0.9200000166893005,
+        "balanced_accuracy": 0.9200000017881393,
+        "count": 100,
+        "log_loss": 0.18307971954345703,
+        "multiclass_brier": 0.10336324572563171,
+        "per_class_recall": {
+          "0": 0.9200000166893005,
+          "1": 1.0,
+          "2": 0.7599999904632568,
+          "3": 1.0
+        }
+      },
+      "device": "cpu",
+      "maximum_metric_difference": 4.470348358154297e-08,
+      "selected_epoch": 1,
+      "selected_not_final_epoch": true
+    },
+    "bert-youtube": {
+      "atol": 2e-05,
+      "checkpoint_sha256": "e06e44193662a3a73be6c88b49f29e6268de793c94d71726984696dc216ba587",
+      "development_replay": {
+        "accuracy": 0.9599999785423279,
+        "balanced_accuracy": 0.9599999785423279,
+        "count": 50,
+        "log_loss": 0.19927160441875458,
+        "multiclass_brier": 0.08187489211559296,
+        "per_class_recall": {
+          "0": 0.9599999785423279,
+          "1": 0.9599999785423279
+        }
+      },
+      "device": "cpu",
+      "maximum_metric_difference": 3.129243850708008e-07,
+      "selected_epoch": 3,
+      "selected_not_final_epoch": false
+    },
+    "gpt2-ag_news": {
+      "atol": 2e-05,
+      "checkpoint_sha256": "cb447a730e76604fd392f1023adb68ea67ee290482b9db395d4ffc48f5fb67b5",
+      "development_replay": {
+        "accuracy": 0.9200000166893005,
+        "balanced_accuracy": 0.9199999868869781,
+        "count": 100,
+        "log_loss": 0.2435673326253891,
+        "multiclass_brier": 0.1073075383901596,
+        "per_class_recall": {
+          "0": 0.9599999785423279,
+          "1": 0.9599999785423279,
+          "2": 0.8399999737739563,
+          "3": 0.9200000166893005
+        }
+      },
+      "device": "cpu",
+      "maximum_metric_difference": 7.450580596923828e-08,
+      "selected_epoch": 1,
+      "selected_not_final_epoch": true
+    },
+    "gpt2-youtube": {
+      "atol": 2e-05,
+      "checkpoint_sha256": "b84e6249fd9f8a74ac987b2f8d752e1253ba99d24a521bb8d9163abdd3a74fec",
+      "development_replay": {
+        "accuracy": 0.9599999785423279,
+        "balanced_accuracy": 0.9600000083446503,
+        "count": 50,
+        "log_loss": 0.07097135484218597,
+        "multiclass_brier": 0.05098157376050949,
+        "per_class_recall": {
+          "0": 1.0,
+          "1": 0.9200000166893005
+        }
+      },
+      "device": "cpu",
+      "maximum_metric_difference": 1.862645149230957e-07,
+      "selected_epoch": 3,
+      "selected_not_final_epoch": false
+    }
+  },
+  "cleanup": {
+    "finite_cli_jobs_completed": true,
+    "no_new_endpoint_service_or_container_daemon_started": true,
+    "retained_artifacts": "pinned public bases, four task checkpoints, original failed banks and fresh qualification/replay evidence retained in ignored local artifact directories",
+    "temporary_smoke_scripts_removed": true
+  },
+  "completeness_regression": {
+    "cause": "float32 tensor reduction rounded differently from the actual persisted token values",
+    "confirmed_original_real_discrepancy": 1.0833609849214554e-06,
+    "corrected_real_cpu_smoke": "/home/n0b/projects/expl_drift_experiments/results/research-extension-data/corrected-completeness-real-sample.json",
+    "corrected_real_cpu_smoke_elapsed_seconds": 196.81666936600232,
+    "corrected_real_cpu_smoke_exact_recalculation": true,
+    "corrected_real_cpu_smoke_gradient_evaluations": [
+      96,
+      96,
+      96
+    ],
+    "fix": "serialize token values once; derive and independently verify residual with math.fsum; no tolerance change",
+    "pooling": "Passed the original combined absolute/relative tolerance, including GPT-2. Absolute discrepancy alone was not a failed gate; no pooling or tolerance changes made.",
+    "regression": "Both real tiny BERT/GPT-2 large-signed-value cases failed before and passed after",
+    "worst_original_sample_id": "ag:6503e381a2dd97184c27e99c9a87557610635db9abe682c02cc545937461443f"
+  },
+  "core_handoff_files_sha256": {
+    "TODO.md": "f22155b8094e9bdb1caf157f1d17da391d2c87904f3a7c3c7137978d1f8a9e01",
+    "docs/research-extension-plan-2026-10-11.md": "7aaf400dd583f9c10e4e59bdadcaeacae53230bad7dee71b4c213bf1540c9a54"
+  },
+  "corpora": {
+    "ag_news": {
+      "allocation_sha256": "a7b03900bd5a1477250fdd3a34f9a261c8e78c78a83d63625cf074c82246d2d7",
+      "artifact_directory": "/home/n0b/projects/expl_drift_experiments/results/research-extension-data/ag-news",
+      "artifacts_sha256": {
+        "bounded-development-qualification.json": "ef8ef754cb71541c435ba94514691912182d51909a94566454b61a0804fdb00e",
+        "inventory.json": "ab5814f51e23a91769a070009f79a0076b0619a766bb3abb6ac9402ead2f5f40",
+        "roles.json": "bd80bb90cb32a5876058f328457b7a8f39e6e6307c2c8af7a627687c3a11a724",
+        "schedule.json": "550efce8f49fafabe9a445c1ddbad07e08fd3b53ef0b824c760182ededf6bcd9"
+      },
+      "manifest_summary_without_group_links": {
+        "archive_sha256": "4ba85769cba2ef3b6f761eb5e3ff89132de5f9264fb43d4e17ffa480b627a96e",
+        "counts": {
+          "by_class": {
+            "0": 31893,
+            "1": 31897,
+            "2": 31877,
+            "3": 31879
+          },
+          "by_source_split": {
+            "test": 7590,
+            "train": 119956
+          },
+          "by_source_split_class": {
+            "test": {
+              "0": 1899,
+              "1": 1897,
+              "2": 1898,
+              "3": 1896
+            },
+            "train": {
+              "0": 29994,
+              "1": 30000,
+              "2": 29979,
+              "3": 29983
+            }
+          },
+          "eligible": 127546,
+          "eligible_groups": 127417,
+          "excluded_by_reason": {
+            "conflicting_group_labels": 44,
+            "test_group_overlaps_training": 10
+          },
+          "raw": 127600
+        },
+        "dataset": "AG News",
+        "dataset_id": "fancyzhx/ag_news",
+        "hashes": {
+          "exclusions": "401ded1c870632f37e8f63711eff32a5fb3af74881f36c8770951e62a14387ca",
+          "group_links": "573b9b51c6e733ae902f6873774204e9695595e20ab6f6ce6adf4719a3216bfe",
+          "groups": "39a369ecac161f5cafdd03e33c1afdb468cee4e69148a7bb548ce00f144707ca",
+          "labels": "2594c747d76a065aef76239ae6023227bf5310ccbeef61f96013a4b32ec2762d",
+          "source_files": "83758299cc97c4dd5a6881f35ae7e9429e6970d30fe634be1e791a5d516a1ee6",
+          "source_ids": "ea48752865d4bd18717e08eaa35e8b977dfc57d8afa4cea31611582d164d53b9",
+          "source_splits": "ae13442b5b6c53241bca9d6fbdbe9ee793b51afc4ad711e9538fd6a38ac6e441",
+          "task_schema": "0e3a3ead2f429c93d274087f51aa0fd67a258b33392e7c140974f2b642ec6b15",
+          "text": "8dace585f68b486af2ac5bdd92a4096459f8f21bdd7bfc5034e5054b7fbed801",
+          "transforms": "3c7c3e09efe34930bc086f09ecbb5e187117a3056c55f82f1db3769c9a670299"
+        },
+        "inventory_sha256": "1523569cb97febc4c05f64c17bb5ab5ca1e1bc129d17f5a3235f518063512b07",
+        "members": [
+          {
+            "member": "data/train-00000-of-00001.parquet",
+            "sha256": "fc508d6d9868594e3da960a8cfeb63ab5a4746598b93428c224397080c1f52ee",
+            "source_split": "train"
+          },
+          {
+            "member": "data/test-00000-of-00001.parquet",
+            "sha256": "71de87ec66bc5737752a2502204dfa6d7fe9856ade3ea444dc6317789a4f13fb",
+            "source_split": "test"
+          }
+        ],
+        "provenance": "public-pinned",
+        "revision": "eb185aade064a813bc0b7f42de02595523103ca4",
+        "role_source_splits": {
+          "calibration": "test",
+          "development": "test",
+          "held_out_evaluation": "test",
+          "held_out_stable": "test",
+          "reference": "test",
+          "threshold_tuning": "test",
+          "training": "train"
+        },
+        "schema_version": 2,
+        "source_urls": {
+          "test": "https://huggingface.co/datasets/fancyzhx/ag_news/resolve/eb185aade064a813bc0b7f42de02595523103ca4/data/test-00000-of-00001.parquet",
+          "train": "https://huggingface.co/datasets/fancyzhx/ag_news/resolve/eb185aade064a813bc0b7f42de02595523103ca4/data/train-00000-of-00001.parquet"
+        },
+        "task_schema": {
+          "candidate_ids": [
+            "world",
+            "sports",
+            "business",
+            "sci_tech"
+          ],
+          "labels": {
+            "0": "world",
+            "1": "sports",
+            "2": "business",
+            "3": "sci_tech"
+          },
+          "reference_candidate": "world",
+          "version": 1
+        },
+        "transforms": {
+          "decode": "verified parquet bytes decoded by pyarrow; text must be a string",
+          "deduplication": "first train-then-test/member/row eligible representative per exact text",
+          "exclusions": "invalid labels and blank text excluded; all conflicting-label group records excluded; every test record in a group containing any train record excluded, even if train record is otherwise excluded",
+          "grouping_only": "global exact text and conservative data._template casefold/whitespace/URL keys",
+          "input": "identity: exact parquet text; no stripping, case folding or Unicode normalization",
+          "source_split": "eligible whole groups have exactly one original source split; training uses train, every other required role uses test",
+          "version": 1,
+          "video": "not applicable; empty string, never a holdout variable"
+        },
+        "video_holdout": false
+      },
+      "protocol_frozen": false,
+      "role_source_splits": {
+        "calibration": "test",
+        "development": "test",
+        "held_out_evaluation": "test",
+        "held_out_stable": "test",
+        "reference": "test",
+        "threshold_tuning": "test",
+        "training": "train"
+      },
+      "roles": {
+        "calibration": {
+          "class_counts": {
+            "0": 100,
+            "1": 100,
+            "2": 100,
+            "3": 100
+          },
+          "count": 400,
+          "groups": 400,
+          "videos": {}
+        },
+        "development": {
+          "class_counts": {
+            "0": 25,
+            "1": 25,
+            "2": 25,
+            "3": 25
+          },
+          "count": 100,
+          "groups": 100,
+          "videos": {}
+        },
+        "held_out_evaluation": {
+          "class_counts": {
+            "0": 250,
+            "1": 250,
+            "2": 250,
+            "3": 250
+          },
+          "count": 1000,
+          "groups": 1000,
+          "videos": {}
+        },
+        "held_out_stable": {
+          "class_counts": {
+            "0": 125,
+            "1": 125,
+            "2": 125,
+            "3": 125
+          },
+          "count": 500,
+          "groups": 500,
+          "videos": {}
+        },
+        "reference": {
+          "class_counts": {
+            "0": 25,
+            "1": 25,
+            "2": 25,
+            "3": 25
+          },
+          "count": 100,
+          "groups": 100,
+          "videos": {}
+        },
+        "threshold_tuning": {
+          "class_counts": {
+            "0": 250,
+            "1": 250,
+            "2": 250,
+            "3": 250
+          },
+          "count": 1000,
+          "groups": 1000,
+          "videos": {}
+        },
+        "training": {
+          "class_counts": {
+            "0": 750,
+            "1": 750,
+            "2": 750,
+            "3": 750
+          },
+          "count": 3000,
+          "groups": 2871,
+          "videos": {}
+        }
+      },
+      "schedule_sha256": "890c516083469595115ea8b83000e593d55360ae631eb9ac53098353eff0110b",
+      "window_counts": [
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100
+      ],
+      "windows": 20
+    },
+    "youtube": {
+      "allocation_sha256": "5c1a767f4eba3975c70d6413a2e0f506fffe5419eae87a3d59044ace2b73816e",
+      "artifact_directory": "/home/n0b/projects/expl_drift_experiments/results/research-extension-data/youtube-v2",
+      "artifacts_sha256": {
+        "bounded-development-qualification.json": "eeb9decb80c4dbe4f07a7c7a5f288fede5c50f6d13e68b4b165e3ec51d3322e0",
+        "inventory.json": "a8733e7c19490c0dce2a7d536da009b7f540894b4179a86c03a3ccaa0a0ff636",
+        "roles.json": "eddd1ca30092109ee3c4b61fafae51e9804477f92db504588c6d090a577d9523",
+        "schedule.json": "d73b074555d3e29965eae576295d3b7553f7fa255a2017eda247e8ef4a1f5b02"
+      },
+      "manifest_summary_without_group_links": {
+        "archive_sha256": "bd6182891adb3cfc8334b82c062176dfbebc563bf0ba07e31c2645f916865a0a",
+        "counts": {
+          "by_class": {
+            "0": 919,
+            "1": 841
+          },
+          "by_video": {
+            "Youtube01-Psy": 349,
+            "Youtube02-KatyPerry": 346,
+            "Youtube03-LMFAO": 340,
+            "Youtube04-Eminem": 405,
+            "Youtube05-Shakira": 320
+          },
+          "by_video_class": {
+            "Youtube01-Psy": {
+              "0": 174,
+              "1": 175
+            },
+            "Youtube02-KatyPerry": {
+              "0": 173,
+              "1": 173
+            },
+            "Youtube03-LMFAO": {
+              "0": 195,
+              "1": 145
+            },
+            "Youtube04-Eminem": {
+              "0": 198,
+              "1": 207
+            },
+            "Youtube05-Shakira": {
+              "0": 179,
+              "1": 141
+            }
+          },
+          "eligible": 1760,
+          "eligible_groups": 1746,
+          "excluded_by_reason": {
+            "duplicate_source_or_exact_text": 196
+          },
+          "raw": 1956
+        },
+        "dataset": "UCI YouTube Spam Collection",
+        "hashes": {
+          "exclusions": "47d3790809b0a048852750dbbca99571eaaa60cafed9ca425fcc736165bb199b",
+          "group_links": "ce33ea66f551afff3cdba19e7f6ff362ca657b56c64276f051ecf50403345d15",
+          "groups": "a01fe11ca774a79d9a16a0daee916b804ae2fcf1687c53160cc8d0c8063e1cf7",
+          "labels": "c7bdaa51320068b4170d22ca5f3806ca1ad39128d242286ea014a34c069e29a9",
+          "source_ids": "9119fbb00baddb4f2268e224b8115d82204c5bd3391759985a0bac91b2ea069d",
+          "task_schema": "2328ca2e9f493d4f7785a6902a08dd848850b6231b6ea17ffc8d07a74b915114",
+          "text": "5372d2c09fdca3edcd996eff4ac2eecd9e5e75955d4544a12c15dde99a625e1e",
+          "transforms": "b33b3fd8eca0981b6ba69c50656cd2d002720cf73a7d63adafe8cf2e31436705"
+        },
+        "inventory_sha256": "63d57cf1b9177bc2bfd8294ec4546e3fa0eaaaabf6cb51991e01ba3ab9038f41",
+        "license": "CC BY 4.0",
+        "members": [
+          {
+            "initial_bom": false,
+            "member": "Youtube01-Psy.csv",
+            "sha256": "19797e6c77690e3c8809cfd2853ae7341390636367ba66cf5d4f4083f0b88535"
+          },
+          {
+            "initial_bom": false,
+            "member": "Youtube02-KatyPerry.csv",
+            "sha256": "902c614f8ef24f987d6f614d7e6111aa5160b89a0646b68e007bd6044a3d123b"
+          },
+          {
+            "initial_bom": false,
+            "member": "Youtube03-LMFAO.csv",
+            "sha256": "702ef589860a1831956f527760a3d9737ef8a07ab36c7de35b92b8898b8c3928"
+          },
+          {
+            "initial_bom": false,
+            "member": "Youtube04-Eminem.csv",
+            "sha256": "92f54eb6b22fdf3b7ae85e1f500e5aa7442edd025e504b988a97078756187e76"
+          },
+          {
+            "initial_bom": false,
+            "member": "Youtube05-Shakira.csv",
+            "sha256": "1d8ab47b71e8037c51183b2fc62f0591a48a4b54f3a4f5d9d3043113b274e98e"
+          }
+        ],
+        "schema_version": 2,
+        "task_schema": {
+          "candidate_ids": [
+            "ham",
+            "spam"
+          ],
+          "labels": {
+            "0": "ham",
+            "1": "spam"
+          },
+          "reference_candidate": "ham",
+          "version": 1
+        },
+        "transforms": {
+          "decode": "strict UTF-8; optional initial CSV BOM removed by utf-8-sig; CSV newline semantics preserved",
+          "deduplication": "one first archive-member/row representative per transitive same-ID/exact-text component; entire template group excluded on conflicting valid labels",
+          "grouping_only": "same nonempty COMMENT_ID globally; exact CONTENT; casefold/whitespace template for >=40 characters and >=8 alphabetic words; URL replacement only for >=80 characters and >=12 alphabetic words",
+          "input": "identity: exact CONTENT field; no stripping, case folding or Unicode normalization",
+          "version": 1,
+          "video": "retained grouping/uncertainty variable, NOT video-disjoint holdout"
+        },
+        "url": "https://archive.ics.uci.edu/static/public/380/youtube+spam+collection.zip",
+        "video_holdout": false
+      },
+      "protocol_frozen": false,
+      "role_source_splits": null,
+      "roles": {
+        "calibration": {
+          "class_counts": {
+            "0": 100,
+            "1": 100
+          },
+          "count": 200,
+          "groups": 200,
+          "videos": {
+            "Youtube01-Psy": 51,
+            "Youtube02-KatyPerry": 34,
+            "Youtube03-LMFAO": 32,
+            "Youtube04-Eminem": 43,
+            "Youtube05-Shakira": 40
+          }
+        },
+        "development": {
+          "class_counts": {
+            "0": 25,
+            "1": 25
+          },
+          "count": 50,
+          "groups": 50,
+          "videos": {
+            "Youtube01-Psy": 8,
+            "Youtube02-KatyPerry": 12,
+            "Youtube03-LMFAO": 11,
+            "Youtube04-Eminem": 5,
+            "Youtube05-Shakira": 14
+          }
+        },
+        "held_out_evaluation": {
+          "class_counts": {
+            "0": 250,
+            "1": 250
+          },
+          "count": 500,
+          "groups": 486,
+          "videos": {
+            "Youtube01-Psy": 92,
+            "Youtube02-KatyPerry": 111,
+            "Youtube03-LMFAO": 87,
+            "Youtube04-Eminem": 118,
+            "Youtube05-Shakira": 92
+          }
+        },
+        "held_out_stable": {
+          "class_counts": {
+            "0": 125,
+            "1": 125
+          },
+          "count": 250,
+          "groups": 250,
+          "videos": {
+            "Youtube01-Psy": 49,
+            "Youtube02-KatyPerry": 59,
+            "Youtube03-LMFAO": 46,
+            "Youtube04-Eminem": 51,
+            "Youtube05-Shakira": 45
+          }
+        },
+        "reference": {
+          "class_counts": {
+            "0": 25,
+            "1": 25
+          },
+          "count": 50,
+          "groups": 50,
+          "videos": {
+            "Youtube01-Psy": 6,
+            "Youtube02-KatyPerry": 6,
+            "Youtube03-LMFAO": 10,
+            "Youtube04-Eminem": 13,
+            "Youtube05-Shakira": 15
+          }
+        },
+        "threshold_tuning": {
+          "class_counts": {
+            "0": 100,
+            "1": 100
+          },
+          "count": 200,
+          "groups": 200,
+          "videos": {
+            "Youtube01-Psy": 40,
+            "Youtube02-KatyPerry": 41,
+            "Youtube03-LMFAO": 36,
+            "Youtube04-Eminem": 48,
+            "Youtube05-Shakira": 35
+          }
+        },
+        "training": {
+          "class_counts": {
+            "0": 150,
+            "1": 150
+          },
+          "count": 300,
+          "groups": 300,
+          "videos": {
+            "Youtube01-Psy": 63,
+            "Youtube02-KatyPerry": 57,
+            "Youtube03-LMFAO": 67,
+            "Youtube04-Eminem": 69,
+            "Youtube05-Shakira": 44
+          }
+        }
+      },
+      "schedule_sha256": "01e2c088c66eb02ea8c4c94761527fd64af603eeae1700702a77e666512513ce",
+      "window_counts": [
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50
+      ],
+      "windows": 20
+    }
+  },
+  "development_selection": {
+    "ag_news": {
+      "path": "/home/n0b/projects/expl_drift_experiments/results/research-extension-data/ag-news/bounded-development-qualification.json",
+      "sha256": "fb78320ea1f3ddbb87848cbcad112822d5a032d99fb1342275ce598a2d8b0d96"
+    },
+    "youtube": {
+      "path": "/home/n0b/projects/expl_drift_experiments/results/research-extension-data/youtube-v2/bounded-development-qualification.json",
+      "sha256": "c98fcc3fb5ad7dba29b0eef5283c48b090691e48dd2869215c0283eac5c4df22"
+    }
+  },
+  "environment": {
+    "alternate_engines": "command -v podman buildah nerdctl ctr runc found none",
+    "device": "NVIDIA GeForce RTX 3070",
+    "docker": "unavailable in WSL distro; docker version reported integration missing",
+    "overlay": "temporary Python 3.13 numerical environment reusing existing numeric site-packages; not a clean installed-package environment or complete endpoint lock qualification",
+    "pyarrow": "21.0.0",
+    "python": "/tmp/expl-drift-research-qualification/bin/python",
+    "torch": "2.10.0+cu128",
+    "transformers": "5.19.0"
+  },
+  "execution_branch": "codex/research-extension",
+  "experiments_source_commits": {
+    "docs(research): document checkpoint and quality workflows": "5aad643b74c49b1b7e7fa7157a77649476d87b4a",
+    "feat(research): prepare pinned corpora and reference checkpoints": "f6b783ecf865a21e14793c3452201365365e2b9d",
+    "feat(research): report proper quality and prior composition": "185bfafcbd0218401e586d0bd7fafd26b29edbde",
+    "fix(research): derive completeness from persisted attributions": "ddb2bd98a0661f45f78a809510af023f7235830e"
+  },
+  "fresh_qualification": {
+    "bert-ag_news": {
+      "G1": "not_established: task schema/alignment/sign/permutation case coverage, all model/corpus signals and resource approvals are separate gates",
+      "bank_sha256": [
+        "fdc9cb758ad33f73fbe266632043fe3343f7858afe0aedfd6475d1076fbc712a",
+        "f789717d6459c8272c54858cb37cf96b455818e7c8a3ab3183e1b58644b25846",
+        "f0150265bdfed24d88a58a2710bac64ac483a275a5a1f4fcb79dcf961fdf1618",
+        "a0e666ff5335711c4d254bce8a85f5c6083a847ff497bcd20e0fb0af89dce468",
+        "19e7cf6455fa87720e52d2ef1bba3371f1107e79678d06a1df70ad1111dfddeb",
+        "8d984d314594d8d621aca489beee0271e1154f36a82e745fd31430947572b3df"
+      ],
+      "comparison": {
+        "atol": 1e-05,
+        "maximum_absolute_discrepancy": {
+          "attributions": 0.0,
+          "logits": 9.5367431640625e-07,
+          "probabilities": 1.1920928955078125e-07,
+          "representation": 1.1324882507324219e-06,
+          "singleton_vs_batch_logits": 9.5367431640625e-07
+        },
+        "numerical_comparison_passed": true,
+        "rtol": 1e-05,
+        "scope": "these designated examples/runtimes only; not full task qualification or a permission to reuse arbitrary batch contexts"
+      },
+      "development_sha256": "fb78320ea1f3ddbb87848cbcad112822d5a032d99fb1342275ce598a2d8b0d96",
+      "measured_cost": {
+        "actual_gradient_evaluations": 23040,
+        "elapsed_extraction_seconds": 508.91631109200534,
+        "executed_bank_passes": 6,
+        "fixed_targets_per_example": 3,
+        "max_evaluations_per_target": 288,
+        "source_examples": 8,
+        "unique_texts": 8
+      },
+      "role": "development",
+      "runtime": {
+        "baseline": "pad_document_tokens",
+        "candidate_ids": [
+          "world",
+          "sports",
+          "business",
+          "sci_tech"
+        ],
+        "checkpoint_sha256": "85baa52c59f8e6ee13b2c77034431c1638ed02ec60d34beed4069166c2dac8ec",
+        "completeness_atol": 0.01,
+        "completeness_rtol": 0.01,
+        "device": "cuda:0",
+        "forward_atol": 1e-05,
+        "forward_rtol": 1e-05,
+        "implementation_sha256": "5bb976ab548c8c1b356c9cd14a0f35316cdff5e546195a8b4ed28223aa095908",
+        "integration_implementation_sha256": "fa9131926714f945a86ff19e85d6ddb9a97649947c693ad954d5dd144727a3a9",
+        "max_tokens": 128,
+        "model_type": "bert",
+        "n_steps": 64,
+        "observed_checkpoint_label_mapping": {
+          "0": "world",
+          "1": "sports",
+          "2": "business",
+          "3": "sci_tech"
+        },
+        "padding_side": "right",
+        "pooling": "document_mean_last_hidden",
+        "precision": "float32",
+        "reference_candidate_id": "world",
+        "target_semantics": "fixed_candidate_margin",
+        "tf32": false,
+        "tokenizer_sha256": "85baa52c59f8e6ee13b2c77034431c1638ed02ec60d34beed4069166c2dac8ec",
+        "torch": "2.10.0",
+        "transformers": "5.19.0"
+      },
+      "schema_version": 1
+    },
+    "bert-youtube": {
+      "G1": "not_established: task schema/alignment/sign/permutation case coverage, all model/corpus signals and resource approvals are separate gates",
+      "bank_sha256": [
+        "8f6bfcd035825442d2437460b4dc06151a79e1310851170c7cd12a89586c422e",
+        "cacb22d0270f6499c27c6dba40e7de6cb443f18fa4ea31e2f92592471df88781",
+        "012d45ffa4059461b3c74e5e48578aa2b7878ea7195413b340b7433e73dbf0a0",
+        "676ab4e1bb58b0cb0954c2a8fa46e6ce209b10f24d2a38c043a12b6a3a4adf33",
+        "6d5053a67ce39e0a45a933dee7d36a01488229de3f72b7b5df12dc11971f1c97",
+        "7a8867f94fca9165600c006901c317ac439ebb26e0d83e62c1bc53186ac9e1ef"
+      ],
+      "comparison": {
+        "atol": 1e-05,
+        "maximum_absolute_discrepancy": {
+          "attributions": 0.0,
+          "logits": 4.76837158203125e-07,
+          "probabilities": 1.1920928955078125e-07,
+          "representation": 1.3709068298339844e-06,
+          "singleton_vs_batch_logits": 4.76837158203125e-07
+        },
+        "numerical_comparison_passed": true,
+        "rtol": 1e-05,
+        "scope": "these designated examples/runtimes only; not full task qualification or a permission to reuse arbitrary batch contexts"
+      },
+      "development_sha256": "c98fcc3fb5ad7dba29b0eef5283c48b090691e48dd2869215c0283eac5c4df22",
+      "measured_cost": {
+        "actual_gradient_evaluations": 6336,
+        "elapsed_extraction_seconds": 134.900179328979,
+        "executed_bank_passes": 6,
+        "fixed_targets_per_example": 1,
+        "max_evaluations_per_target": 240,
+        "source_examples": 8,
+        "unique_texts": 8
+      },
+      "role": "development",
+      "runtime": {
+        "baseline": "pad_document_tokens",
+        "candidate_ids": [
+          "ham",
+          "spam"
+        ],
+        "checkpoint_sha256": "e06e44193662a3a73be6c88b49f29e6268de793c94d71726984696dc216ba587",
+        "completeness_atol": 0.01,
+        "completeness_rtol": 0.01,
+        "device": "cuda:0",
+        "forward_atol": 1e-05,
+        "forward_rtol": 1e-05,
+        "implementation_sha256": "5bb976ab548c8c1b356c9cd14a0f35316cdff5e546195a8b4ed28223aa095908",
+        "integration_implementation_sha256": "fa9131926714f945a86ff19e85d6ddb9a97649947c693ad954d5dd144727a3a9",
+        "max_tokens": 128,
+        "model_type": "bert",
+        "n_steps": 64,
+        "observed_checkpoint_label_mapping": {
+          "0": "ham",
+          "1": "spam"
+        },
+        "padding_side": "right",
+        "pooling": "document_mean_last_hidden",
+        "precision": "float32",
+        "reference_candidate_id": "ham",
+        "target_semantics": "fixed_candidate_margin",
+        "tf32": false,
+        "tokenizer_sha256": "e06e44193662a3a73be6c88b49f29e6268de793c94d71726984696dc216ba587",
+        "torch": "2.10.0",
+        "transformers": "5.19.0"
+      },
+      "schema_version": 1
+    },
+    "gpt2-ag_news": {
+      "G1": "not_established: task schema/alignment/sign/permutation case coverage, all model/corpus signals and resource approvals are separate gates",
+      "bank_sha256": [
+        "82bfa27b4679b8009a5778f2f85a1f36d7b840ab3e5b9ae6fe91a6edc827c968",
+        "fb13dd6fa6ded56692fc33effa3e355d33fe5a6e3279ff7b6ced179c13427c28",
+        "9aa962399124e6c5f8b563f7e1f18f2d50bec79f3115a8151b9545c684141884",
+        "1da008212a7cee1e8c46b761c12c2cdafbf47d4cb275e156bbff8315ac3feebe",
+        "25b63085df10ec62b921258aacf06db1bbfcb732062cbde1651ec877d5cb1509",
+        "1680a98d0abab08728edf88d4ceac7ee2818b279697a20599d6746a371476db8"
+      ],
+      "comparison": {
+        "atol": 1e-05,
+        "maximum_absolute_discrepancy": {
+          "attributions": 0.0,
+          "logits": 4.76837158203125e-06,
+          "probabilities": 1.7881393432617188e-07,
+          "representation": 1.52587890625e-05,
+          "singleton_vs_batch_logits": 4.76837158203125e-06
+        },
+        "numerical_comparison_passed": true,
+        "rtol": 1e-05,
+        "scope": "these designated examples/runtimes only; not full task qualification or a permission to reuse arbitrary batch contexts"
+      },
+      "development_sha256": "fb78320ea1f3ddbb87848cbcad112822d5a032d99fb1342275ce598a2d8b0d96",
+      "measured_cost": {
+        "actual_gradient_evaluations": 14688,
+        "elapsed_extraction_seconds": 331.0708872889227,
+        "executed_bank_passes": 6,
+        "fixed_targets_per_example": 3,
+        "max_evaluations_per_target": 144,
+        "source_examples": 8,
+        "unique_texts": 8
+      },
+      "role": "development",
+      "runtime": {
+        "baseline": "pad_document_tokens",
+        "candidate_ids": [
+          "world",
+          "sports",
+          "business",
+          "sci_tech"
+        ],
+        "checkpoint_sha256": "cb447a730e76604fd392f1023adb68ea67ee290482b9db395d4ffc48f5fb67b5",
+        "completeness_atol": 0.01,
+        "completeness_rtol": 0.01,
+        "device": "cuda:0",
+        "forward_atol": 1e-05,
+        "forward_rtol": 1e-05,
+        "implementation_sha256": "5bb976ab548c8c1b356c9cd14a0f35316cdff5e546195a8b4ed28223aa095908",
+        "integration_implementation_sha256": "fa9131926714f945a86ff19e85d6ddb9a97649947c693ad954d5dd144727a3a9",
+        "max_tokens": 128,
+        "model_type": "gpt2",
+        "n_steps": 64,
+        "observed_checkpoint_label_mapping": {
+          "0": "world",
+          "1": "sports",
+          "2": "business",
+          "3": "sci_tech"
+        },
+        "padding_side": "right",
+        "pooling": "document_mean_last_hidden",
+        "precision": "float32",
+        "reference_candidate_id": "world",
+        "target_semantics": "fixed_candidate_margin",
+        "tf32": false,
+        "tokenizer_sha256": "cb447a730e76604fd392f1023adb68ea67ee290482b9db395d4ffc48f5fb67b5",
+        "torch": "2.10.0",
+        "transformers": "5.19.0"
+      },
+      "schema_version": 1
+    },
+    "gpt2-youtube": {
+      "G1": "not_established: task schema/alignment/sign/permutation case coverage, all model/corpus signals and resource approvals are separate gates",
+      "bank_sha256": [
+        "5865056c6e5dd8d7ff91450ed825038c4b2d97b8d7ea8ddf5c9761f01823462d",
+        "a147ffa697585a7ca071da8566de149adfc8906f556314cee3da7bc7b191d107",
+        "2af9ccd70c63a26e1c86c909994f7ca4acf97b43f60b23414605b7db9ea56fa7",
+        "09e228ad80ec8d9f83669f184dfcdb58a9e536ead0759ae471c9a1aaafbd0dbd",
+        "566ab34e9c2e46b99d6a65be8736ef585ba83a187ba615360141ad6db9dfa219",
+        "5f3ad499e783c3eb2d10a38545876af501c450192b56256fa997ad2964e8193f"
+      ],
+      "comparison": {
+        "atol": 1e-05,
+        "maximum_absolute_discrepancy": {
+          "attributions": 0.0,
+          "logits": 3.814697265625e-06,
+          "probabilities": 1.4901161193847656e-08,
+          "representation": 0.000156402587890625,
+          "singleton_vs_batch_logits": 3.814697265625e-06
+        },
+        "numerical_comparison_passed": true,
+        "rtol": 1e-05,
+        "scope": "these designated examples/runtimes only; not full task qualification or a permission to reuse arbitrary batch contexts"
+      },
+      "development_sha256": "c98fcc3fb5ad7dba29b0eef5283c48b090691e48dd2869215c0283eac5c4df22",
+      "measured_cost": {
+        "actual_gradient_evaluations": 4896,
+        "elapsed_extraction_seconds": 106.6700861560239,
+        "executed_bank_passes": 6,
+        "fixed_targets_per_example": 1,
+        "max_evaluations_per_target": 144,
+        "source_examples": 8,
+        "unique_texts": 8
+      },
+      "role": "development",
+      "runtime": {
+        "baseline": "pad_document_tokens",
+        "candidate_ids": [
+          "ham",
+          "spam"
+        ],
+        "checkpoint_sha256": "b84e6249fd9f8a74ac987b2f8d752e1253ba99d24a521bb8d9163abdd3a74fec",
+        "completeness_atol": 0.01,
+        "completeness_rtol": 0.01,
+        "device": "cuda:0",
+        "forward_atol": 1e-05,
+        "forward_rtol": 1e-05,
+        "implementation_sha256": "5bb976ab548c8c1b356c9cd14a0f35316cdff5e546195a8b4ed28223aa095908",
+        "integration_implementation_sha256": "fa9131926714f945a86ff19e85d6ddb9a97649947c693ad954d5dd144727a3a9",
+        "max_tokens": 128,
+        "model_type": "gpt2",
+        "n_steps": 64,
+        "observed_checkpoint_label_mapping": {
+          "0": "ham",
+          "1": "spam"
+        },
+        "padding_side": "right",
+        "pooling": "document_mean_last_hidden",
+        "precision": "float32",
+        "reference_candidate_id": "ham",
+        "target_semantics": "fixed_candidate_margin",
+        "tf32": false,
+        "tokenizer_sha256": "b84e6249fd9f8a74ac987b2f8d752e1253ba99d24a521bb8d9163abdd3a74fec",
+        "torch": "2.10.0",
+        "transformers": "5.19.0"
+      },
+      "schema_version": 1
+    }
+  },
+  "gates": {
+    "G1": "pending: real Laya AG News/YouTube cells, full sign/permutation/alignment case coverage, qualified immutable runtime and approved full-run ceiling; the four reference cells passed the bounded numerical subset only",
+    "G2": "pending: G1; actual reference/calibration/threshold-tuning banks, explicit null/uncertainty and quality-event budgets, complete B vs B+A calibration/freeze. YouTube tuning200 cannot supply ten disjoint50-example windows. AG tuning1000 supplies one ten100-example horizon, not independent null precision evidence.",
+    "G3": "pending: frozen complete AG News matrix, resources and paired analysis",
+    "G4": "pending: frozen complete YouTube matrix, approved feasible null/role budget and paired analysis",
+    "G5": "pending: post-G2 installed-package cutover, qualified locked image and complete independent offline reproduction"
+  },
+  "implementation_sha256": {
+    "README.md": "c526733463f77b16c880941fb9dc41df0b7df9c4a357dd6a3a63f8ea6816db73",
+    "experiments/research_extension/ag_news.py": "a990c98ad773391e8704cf6ca16c95847243225183c468d5b27142b4b41daf2e",
+    "experiments/research_extension/data.py": "9a0ba85f779feab26f3a747df038d9248f58711eb5c0c3589434bbfab7ed642c",
+    "experiments/research_extension/qualification.py": "dd194e3c0960243a66221afd2bc9945c69bfc974786213b04ef67a9a1dd8641c",
+    "experiments/research_extension/quality.py": "89ae0d8e975e6653d5a7fb46c716dc505f61976c4cb3f81dcaf89c78ebe947da",
+    "experiments/research_extension/reference_adapter.py": "5bb976ab548c8c1b356c9cd14a0f35316cdff5e546195a8b4ed28223aa095908",
+    "experiments/research_extension/schedule.py": "91116ae90b533dbcbffdbee0add9735446986c0330d01e9a2f37d4ec184d42c8",
+    "experiments/research_extension/training.py": "c9648ad065b1d76f17dbecf72a7f1a522d4167d8e6f7cc780a9fcce2e7b01f54",
+    "pyproject.toml": "c5416d18e9f03ae17d673ba703cda137ef6398168814dcd21124f19dbdd508a5",
+    "tests/test_ag_news_inventory.py": "e5b6ed505cb7223a70fe659bbd67c74c7b672b55c82ae7d582ba838257b7ee8e",
+    "tests/test_classification_quality.py": "753ff449c26cec700114a4ce7de84fa51c09680e35b88786275da2f10c7163a7",
+    "tests/test_multiclass_schedule.py": "e806f3046c8e3980f230ab80e6698f2360ed0e42330acf30ba71c577cf60e253",
+    "tests/test_reference_adapter.py": "215303cdfc66530188cba4bd59696b5b1a7dbbd8d495edbb46b259773b22a659",
+    "tests/test_reference_training.py": "4df468ca90bdb0a72248208305e39fb6f6d4749dd1bae8894a216d723414e608"
+  },
+  "initial_increment_commits": {
+    "core": "f36077a9beaf5b668fdf4d090255e87efb236439",
+    "experiments": "77ac52db4a28d85ebb69776b18f5589c361b0ac4"
+  },
+  "plan": "docs/research-extension-plan-2026-10-11.md",
+  "quality_smoke": {
+    "artifact": "/home/n0b/projects/expl_drift_experiments/results/research-extension-data/quality-development-smoke.json",
+    "artifact_sha256": "9ccfc1ca2cf72de918a42cd6a61b4b5b74ace47370d23ac291bd969dcc89804b",
+    "checks": "accuracy, balanced accuracy and log loss independently match sklearn/scipy; label-only controls use identical logits; composition-only expectation uses unchanged balanced prior",
+    "claims": "point estimates only; no group intervals or underlying quality-event claim",
+    "new_model_calls": 0,
+    "scope": "four original development score banks; no failed attribution bank accepted as qualified or primary"
+  },
+  "recorded_at_utc": "2026-10-12T00:54:11.732585+00:00",
+  "schema_version": 1,
+  "training": {
+    "bert-ag_news": {
+      "artifacts": "/home/n0b/projects/expl_drift_experiments/results/research-extension-data/ag-news",
+      "base_source": {
+        "checkpoint": "/home/n0b/projects/expl_drift_experiments/results/models/research-extension-bases/models--google-bert--bert-base-uncased/snapshots/86b5e0934494bd15c9632b12f734a8a67f723594",
+        "repo_id": "google-bert/bert-base-uncased",
+        "revision": "86b5e0934494bd15c9632b12f734a8a67f723594",
+        "sha256": "8ed572a9e0fb6733d14a9fd45f772985e03d91c02786c73ba67c2361ea895b85"
+      },
+      "checkpoint": "/home/n0b/projects/expl_drift_experiments/results/models/research-extension-task-checkpoints/bert-ag_news/checkpoint",
+      "training": {
+        "G1": "not_established: training provenance is not scientific extraction qualification",
+        "checkpoint_sha256": "85baa52c59f8e6ee13b2c77034431c1638ed02ec60d34beed4069166c2dac8ec",
+        "cuda_peak_allocated_bytes": 2285622272,
+        "development_examples": 100,
+        "elapsed_seconds": 115.1625950349844,
+        "epochs": [
+          {
+            "development": {
+              "accuracy": 0.9200000166893005,
+              "balanced_accuracy": 0.9200000017881393,
+              "count": 100,
+              "log_loss": 0.18307967483997345,
+              "multiclass_brier": 0.10336321592330933,
+              "per_class_recall": {
+                "0": 0.9200000166893005,
+                "1": 1.0,
+                "2": 0.7599999904632568,
+                "3": 1.0
+              }
+            },
+            "epoch": 1,
+            "training_log_loss": 0.4874858608891567
+          },
+          {
+            "development": {
+              "accuracy": 0.949999988079071,
+              "balanced_accuracy": 0.9500000029802322,
+              "count": 100,
+              "log_loss": 0.2297918200492859,
+              "multiclass_brier": 0.09075340628623962,
+              "per_class_recall": {
+                "0": 0.9599999785423279,
+                "1": 1.0,
+                "2": 0.9200000166893005,
+                "3": 0.9200000166893005
+              }
+            },
+            "epoch": 2,
+            "training_log_loss": 0.25058798684055605
+          },
+          {
+            "development": {
+              "accuracy": 0.9300000071525574,
+              "balanced_accuracy": 0.9299999922513962,
+              "count": 100,
+              "log_loss": 0.3382512032985687,
+              "multiclass_brier": 0.12270429730415344,
+              "per_class_recall": {
+                "0": 0.9599999785423279,
+                "1": 0.9599999785423279,
+                "2": 0.9200000166893005,
+                "3": 0.8799999952316284
+              }
+            },
+            "epoch": 3,
+            "training_log_loss": 0.14211564652062952
+          }
+        ],
+        "held_out_model_evaluations": 0,
+        "initial_development": {
+          "accuracy": 0.25,
+          "balanced_accuracy": 0.25,
+          "count": 100,
+          "log_loss": 1.4418320655822754,
+          "multiclass_brier": 0.7800068855285645,
+          "per_class_recall": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0,
+            "3": 1.0
+          }
+        },
+        "optimizer_steps": 1125,
+        "schema_version": 1,
+        "selected_epoch": 1,
+        "training_examples": 3000,
+        "training_plan_sha256": "71cc4a288c5c09aadd795189515737d1b2a4cd15deb604888d913e4274c42736"
+      }
+    },
+    "bert-youtube": {
+      "artifacts": "/home/n0b/projects/expl_drift_experiments/results/research-extension-data/youtube-v2",
+      "base_source": {
+        "checkpoint": "/home/n0b/projects/expl_drift_experiments/results/models/research-extension-bases/models--google-bert--bert-base-uncased/snapshots/86b5e0934494bd15c9632b12f734a8a67f723594",
+        "repo_id": "google-bert/bert-base-uncased",
+        "revision": "86b5e0934494bd15c9632b12f734a8a67f723594",
+        "sha256": "8ed572a9e0fb6733d14a9fd45f772985e03d91c02786c73ba67c2361ea895b85"
+      },
+      "checkpoint": "/home/n0b/projects/expl_drift_experiments/results/models/research-extension-task-checkpoints/bert-youtube/checkpoint",
+      "training": {
+        "G1": "not_established: training provenance is not scientific extraction qualification",
+        "checkpoint_sha256": "e06e44193662a3a73be6c88b49f29e6268de793c94d71726984696dc216ba587",
+        "cuda_peak_allocated_bytes": 2286457344,
+        "development_examples": 50,
+        "elapsed_seconds": 19.084634554979857,
+        "epochs": [
+          {
+            "development": {
+              "accuracy": 0.9200000166893005,
+              "balanced_accuracy": 0.9199999868869781,
+              "count": 50,
+              "log_loss": 0.30929309129714966,
+              "multiclass_brier": 0.16339832544326782,
+              "per_class_recall": {
+                "0": 0.9599999785423279,
+                "1": 0.8799999952316284
+              }
+            },
+            "epoch": 1,
+            "training_log_loss": 0.5037690381209056
+          },
+          {
+            "development": {
+              "accuracy": 0.9399999976158142,
+              "balanced_accuracy": 0.9399999976158142,
+              "count": 50,
+              "log_loss": 0.22937630116939545,
+              "multiclass_brier": 0.11302971839904785,
+              "per_class_recall": {
+                "0": 0.9200000166893005,
+                "1": 0.9599999785423279
+              }
+            },
+            "epoch": 2,
+            "training_log_loss": 0.1632198859999577
+          },
+          {
+            "development": {
+              "accuracy": 0.9599999785423279,
+              "balanced_accuracy": 0.9599999785423279,
+              "count": 50,
+              "log_loss": 0.1992712914943695,
+              "multiclass_brier": 0.08187488466501236,
+              "per_class_recall": {
+                "0": 0.9599999785423279,
+                "1": 0.9599999785423279
+              }
+            },
+            "epoch": 3,
+            "training_log_loss": 0.06981991240133842
+          }
+        ],
+        "held_out_model_evaluations": 0,
+        "initial_development": {
+          "accuracy": 0.46000000834465027,
+          "balanced_accuracy": 0.4599999971687794,
+          "count": 50,
+          "log_loss": 0.6965185403823853,
+          "multiclass_brier": 0.5033990144729614,
+          "per_class_recall": {
+            "0": 0.03999999910593033,
+            "1": 0.8799999952316284
+          }
+        },
+        "optimizer_steps": 114,
+        "schema_version": 1,
+        "selected_epoch": 3,
+        "training_examples": 300,
+        "training_plan_sha256": "a50b7db27e99f8e0b231fa8a9e9ca5b6298471d0bfda9b735b2a20125c18f93b"
+      }
+    },
+    "gpt2-ag_news": {
+      "artifacts": "/home/n0b/projects/expl_drift_experiments/results/research-extension-data/ag-news",
+      "base_source": {
+        "checkpoint": "/home/n0b/projects/expl_drift_experiments/results/models/research-extension-bases/models--openai-community--gpt2/snapshots/607a30d783dfa663caf39e06633721c8d4cfcd7e",
+        "repo_id": "openai-community/gpt2",
+        "revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+        "sha256": "6bf503862eb6f284a1d67397526ec58c0928a33ec2f1f1af085c969f787321a0"
+      },
+      "checkpoint": "/home/n0b/projects/expl_drift_experiments/results/models/research-extension-task-checkpoints/gpt2-ag_news/checkpoint",
+      "training": {
+        "G1": "not_established: training provenance is not scientific extraction qualification",
+        "checkpoint_sha256": "cb447a730e76604fd392f1023adb68ea67ee290482b9db395d4ffc48f5fb67b5",
+        "cuda_peak_allocated_bytes": 2857526784,
+        "development_examples": 100,
+        "elapsed_seconds": 120.15854855300859,
+        "epochs": [
+          {
+            "development": {
+              "accuracy": 0.9200000166893005,
+              "balanced_accuracy": 0.9199999868869781,
+              "count": 100,
+              "log_loss": 0.24356740713119507,
+              "multiclass_brier": 0.10730752348899841,
+              "per_class_recall": {
+                "0": 0.9599999785423279,
+                "1": 0.9599999785423279,
+                "2": 0.8399999737739563,
+                "3": 0.9200000166893005
+              }
+            },
+            "epoch": 1,
+            "training_log_loss": 0.5497368099226927
+          },
+          {
+            "development": {
+              "accuracy": 0.949999988079071,
+              "balanced_accuracy": 0.949999988079071,
+              "count": 100,
+              "log_loss": 0.2797243595123291,
+              "multiclass_brier": 0.0885712057352066,
+              "per_class_recall": {
+                "0": 0.9599999785423279,
+                "1": 0.9599999785423279,
+                "2": 0.9200000166893005,
+                "3": 0.9599999785423279
+              }
+            },
+            "epoch": 2,
+            "training_log_loss": 0.29745548938016875
+          },
+          {
+            "development": {
+              "accuracy": 0.9100000262260437,
+              "balanced_accuracy": 0.9099999964237213,
+              "count": 100,
+              "log_loss": 0.5484735369682312,
+              "multiclass_brier": 0.14082108438014984,
+              "per_class_recall": {
+                "0": 0.9599999785423279,
+                "1": 0.9599999785423279,
+                "2": 0.800000011920929,
+                "3": 0.9200000166893005
+              }
+            },
+            "epoch": 3,
+            "training_log_loss": 0.2100145474200787
+          }
+        ],
+        "held_out_model_evaluations": 0,
+        "initial_development": {
+          "accuracy": 0.25,
+          "balanced_accuracy": 0.25,
+          "count": 100,
+          "log_loss": 4.784928798675537,
+          "multiclass_brier": 1.3270584344863892,
+          "per_class_recall": {
+            "0": 1.0,
+            "1": 0.0,
+            "2": 0.0,
+            "3": 0.0
+          }
+        },
+        "optimizer_steps": 1125,
+        "schema_version": 1,
+        "selected_epoch": 1,
+        "training_examples": 3000,
+        "training_plan_sha256": "3feded2cf32d2cf1021276495fff7217f433ad8c79f6311249b8493818142779"
+      }
+    },
+    "gpt2-youtube": {
+      "artifacts": "/home/n0b/projects/expl_drift_experiments/results/research-extension-data/youtube-v2",
+      "base_source": {
+        "checkpoint": "/home/n0b/projects/expl_drift_experiments/results/models/research-extension-bases/models--openai-community--gpt2/snapshots/607a30d783dfa663caf39e06633721c8d4cfcd7e",
+        "repo_id": "openai-community/gpt2",
+        "revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+        "sha256": "6bf503862eb6f284a1d67397526ec58c0928a33ec2f1f1af085c969f787321a0"
+      },
+      "checkpoint": "/home/n0b/projects/expl_drift_experiments/results/models/research-extension-task-checkpoints/gpt2-youtube/checkpoint",
+      "training": {
+        "G1": "not_established: training provenance is not scientific extraction qualification",
+        "checkpoint_sha256": "b84e6249fd9f8a74ac987b2f8d752e1253ba99d24a521bb8d9163abdd3a74fec",
+        "cuda_peak_allocated_bytes": 2857502208,
+        "development_examples": 50,
+        "elapsed_seconds": 17.09197492597741,
+        "epochs": [
+          {
+            "development": {
+              "accuracy": 0.9200000166893005,
+              "balanced_accuracy": 0.9200000166893005,
+              "count": 50,
+              "log_loss": 0.23559778928756714,
+              "multiclass_brier": 0.12753434479236603,
+              "per_class_recall": {
+                "0": 0.9200000166893005,
+                "1": 0.9200000166893005
+              }
+            },
+            "epoch": 1,
+            "training_log_loss": 1.0686931181761126
+          },
+          {
+            "development": {
+              "accuracy": 0.8399999737739563,
+              "balanced_accuracy": 0.8400000035762787,
+              "count": 50,
+              "log_loss": 0.8469377160072327,
+              "multiclass_brier": 0.3011840581893921,
+              "per_class_recall": {
+                "0": 1.0,
+                "1": 0.6800000071525574
+              }
+            },
+            "epoch": 2,
+            "training_log_loss": 0.2727739829933853
+          },
+          {
+            "development": {
+              "accuracy": 0.9599999785423279,
+              "balanced_accuracy": 0.9600000083446503,
+              "count": 50,
+              "log_loss": 0.0709715411067009,
+              "multiclass_brier": 0.05098170414566994,
+              "per_class_recall": {
+                "0": 1.0,
+                "1": 0.9200000166893005
+              }
+            },
+            "epoch": 3,
+            "training_log_loss": 0.20507019616061978
+          }
+        ],
+        "held_out_model_evaluations": 0,
+        "initial_development": {
+          "accuracy": 0.5,
+          "balanced_accuracy": 0.5,
+          "count": 50,
+          "log_loss": 5.958829879760742,
+          "multiclass_brier": 0.9998864531517029,
+          "per_class_recall": {
+            "0": 1.0,
+            "1": 0.0
+          }
+        },
+        "optimizer_steps": 114,
+        "schema_version": 1,
+        "selected_epoch": 3,
+        "training_examples": 300,
+        "training_plan_sha256": "6935885496cbbb52ae00429d38b3648d1b40817e5ebb97785b4c5471b37e516a"
+      }
+    }
+  },
+  "verification": {
+    "actual_surfaces": [
+      "public AG News CLI including whole-group 20-window scheduling",
+      "public corrected YouTube CLI",
+      "four offline-local training CLI invocations on CUDA",
+      "four six-bank qualification CLI invocations on CUDA",
+      "CPU selected-checkpoint replay",
+      "CPU original failing real-sample extraction",
+      "saved-logit quality/label-only replay"
+    ],
+    "elapsed_seconds": 9.3,
+    "passed": 184,
+    "ruff": "new/changed research modules and their tests passed",
+    "suite": "core/tests + experiments/tests + endpoint/tests --import-mode=importlib",
+    "warning": "upstream Starlette/AnyIO BlockingPortal deprecation",
+    "warnings": 1
+  }
+}
