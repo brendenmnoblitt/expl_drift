@@ -246,8 +246,11 @@ had been performed then. Later resource decisions and results are recorded below
 After explicit resource approval, the existing HF Laya endpoint was updated to
 an immutable schema-2 image and its pinned runtime readiness was verified. The
 bounded YouTube development attempt persisted 20 completed requests; request 21
-timed out at its 900-second limit. No retry, resume, qualification report, or G1
-pass resulted. The endpoint was paused, and G1–G5 remain open. Full run evidence:
+timed out at its 900-second limit, and request 22 was not sent. Available batch
+sizes 1 and 4 were exactly repeatable within each size, but attribution values
+differed across batch sizes by up to 0.046; all 32 returned completeness checks
+passed. No complete comparison report or G1 pass resulted. The endpoint was
+paused, and G1–G5 remain open. Full run evidence:
 `../../expl_drift_experiments/results/research-extension-data/remote-laya-qualification-v2/youtube-2026-10-13/`.
 Any further extraction requires a fresh resource decision and output directory.
 No held-out model outcomes were evaluated, and no null-budget or sampling
