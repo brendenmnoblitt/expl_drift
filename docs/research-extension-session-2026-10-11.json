@@ -148,8 +148,8 @@
   },
   "schema_version": 1,
   "source_development_revisions": {
-    "expl_drift": "d8d7538dbe220498fec548b5c0ad0c989d154f86",
-    "expl_drift_experiments": "6ade7168dfd8d09d3a2d3d6d9d1cd5dd4136f0b2"
+    "expl_drift": "345ce131eec50eecd3b00d7ad6a90b1cc1e7caf8",
+    "expl_drift_experiments": "b9d69a1430381cac986c642ab2a05af9e28fd019"
   },
   "status": "endpoint fix committed/code-verified, immutable image configured and health-checked, endpoint paused; fresh qualification pending; G1-G5 not passed",
   "verification": {
