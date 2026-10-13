@@ -144,7 +144,7 @@
     "endpoint_tests_passed": 50,
     "ruff_check": "passed",
     "semantics": "singleton per-sample scoring, representation, and fixed-margin IG; complete request batch remains fingerprinted",
-    "new_qualification": "bounded YouTube and AG News development comparisons passed batch reproducibility separately; checkpoint-artifact fingerprints differ, so they do not establish same-runtime cross-task qualification or G1"
+    "new_qualification": "bounded YouTube and AG News batch comparisons each passed separately, but checkpoint-artifact fingerprints vary on endpoint restarts; an additional health-only check saw a third fingerprint and performed zero extraction requests; G1 remains not established"
   },
   "qualification_run": {
     "status": "completed",
@@ -215,12 +215,26 @@
     "endpoint_state_after_run": "paused",
     "G1_established": false
   },
+  "runtime_fingerprint_check": {
+    "status": "completed_health_only_fingerprint_mismatch",
+    "output": "../expl_drift_experiments/results/research-extension-data/remote-laya-qualification-v3/runtime-fingerprint-check-2026-10-13",
+    "checkpoint_artifact_sha256": "a3f80ff3984e86b0d48879cbfed9c8bd4025d5f0c8e8729227a1d7f653d23b01",
+    "expected_ag_news_checkpoint_artifact_sha256": "f81510fe53d225e1553f302b08fc724752b1c535cc6c0325320dd33dcb7f3c1a",
+    "expected_youtube_checkpoint_artifact_sha256": "35b599d63dfa3816f29a8c1280499560e4950b5a5ebf6b75d1437a2769e1abd1",
+    "configured_image_digest": "sha256:4c47ca3bb84b75f84c4a4a3bfbe8db79923205f58602ce34dbd6abe415077725",
+    "model_revision": "7b928d828b7b0e022f929d9bd2e44165aa270148",
+    "extraction_requests": 0,
+    "gradient_evaluations": 0,
+    "endpoint_state_after_check": "paused",
+    "held_out_evaluation": false,
+    "G1_established": false
+  },
   "schema_version": 1,
   "source_development_revisions": {
     "expl_drift": "345ce131eec50eecd3b00d7ad6a90b1cc1e7caf8",
     "expl_drift_experiments": "b9d69a1430381cac986c642ab2a05af9e28fd019"
   },
-  "status": "bounded YouTube and AG News development batch checks passed separately; checkpoint-artifact hashes differ across restarts and outputs are not combined; endpoint paused; G1-G5 remain open",
+  "status": "YouTube and AG News bounded development comparisons each passed batch checks but endpoint checkpoint-artifact fingerprints vary across starts; latest health-only check ran no extraction; endpoint paused; G1-G5 remain open",
   "verification": {
     "environment": {
       "fastapi": "0.115.12",

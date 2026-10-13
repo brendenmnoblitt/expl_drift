@@ -132,7 +132,7 @@
   },
   "core_handoff_files_sha256": {
     "TODO.md": "f22155b8094e9bdb1caf157f1d17da391d2c87904f3a7c3c7137978d1f8a9e01",
-    "docs/research-extension-plan-2026-10-11.md": "fafb0451fff6263c2e54c1da11c87c6d7bc04f38bf96b49fed313ed9cf969f39"
+    "docs/research-extension-plan-2026-10-11.md": "0c742ce5acbc440de1a5ad54a2d989673f28cacdd96a3d00f57c80afc857d2a3"
   },
   "corpora": {
     "ag_news": {
@@ -1353,7 +1353,7 @@
       "image_identity_semantics": "configured_not_attested",
       "health_wait_seconds": 130.86
     },
-    "new_endpoint_qualification": "bounded YouTube and AG News development comparisons passed batch stability separately; checkpoint-artifact fingerprints differ across restarts, so same-runtime cross-task qualification and G1 remain unestablished"
+    "new_endpoint_qualification": "bounded YouTube and AG News development batch comparisons passed separately, but endpoint checkpoint-artifact fingerprints differ across starts; a health-only check observed a third hash and made zero extraction requests; same-runtime cross-task qualification and G1 remain unestablished"
   },
   "qualification_run": {
     "status": "completed",
@@ -1426,6 +1426,20 @@
     "endpoint_state_after_run": "paused",
     "G1_established": false
   },
+  "runtime_fingerprint_check": {
+    "status": "completed_health_only_fingerprint_mismatch",
+    "output": "../expl_drift_experiments/results/research-extension-data/remote-laya-qualification-v3/runtime-fingerprint-check-2026-10-13",
+    "expected_ag_news_checkpoint_artifact_sha256": "f81510fe53d225e1553f302b08fc724752b1c535cc6c0325320dd33dcb7f3c1a",
+    "expected_youtube_checkpoint_artifact_sha256": "35b599d63dfa3816f29a8c1280499560e4950b5a5ebf6b75d1437a2769e1abd1",
+    "observed_checkpoint_artifact_sha256": "a3f80ff3984e86b0d48879cbfed9c8bd4025d5f0c8e8729227a1d7f653d23b01",
+    "configured_image_digest": "sha256:4c47ca3bb84b75f84c4a4a3bfbe8db79923205f58602ce34dbd6abe415077725",
+    "model_revision": "7b928d828b7b0e022f929d9bd2e44165aa270148",
+    "extraction_requests": 0,
+    "gradient_evaluations": 0,
+    "endpoint_state_after_check": "paused",
+    "held_out_evaluation": false,
+    "G1_established": false
+  },
   "verification": {
     "actual_surfaces": [
       "public AG News CLI including whole-group 20-window scheduling",
@@ -1435,7 +1449,7 @@
       "CPU selected-checkpoint replay",
       "CPU original failing real-sample extraction",
       "saved-logit quality/label-only replay",
-      "HF L4 schema-2 batch-stability comparisons for YouTube and AG News development data on the fixed image; each passed independently, but their checkpoint-artifact fingerprints differed"
+      "HF L4 schema-2 YouTube and AG News batch-stability comparisons passed separately; health-only cold start returned a third checkpoint-artifact hash and ran zero extraction requests"
     ],
     "elapsed_seconds": 9.3,
     "passed": 184,
