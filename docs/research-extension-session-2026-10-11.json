@@ -144,14 +144,47 @@
     "endpoint_tests_passed": 50,
     "ruff_check": "passed",
     "semantics": "singleton per-sample scoring, representation, and fixed-margin IG; complete request batch remains fingerprinted",
-    "new_qualification": "not run; fresh explicit resource approval required"
+    "new_qualification": "bounded YouTube development comparison completed with exact agreement across tested batches; G1 remains not established"
+  },
+  "qualification_run": {
+    "status": "completed",
+    "task": "youtube",
+    "role": "development",
+    "output": "../expl_drift_experiments/results/research-extension-data/remote-laya-qualification-v3/youtube-2026-10-13-singleton-b9d69a1",
+    "image_digest": "sha256:4c47ca3bb84b75f84c4a4a3bfbe8db79923205f58602ce34dbd6abe415077725",
+    "requests_max": 22,
+    "requests_completed": 22,
+    "requests_failed": 0,
+    "requests_not_sent": 0,
+    "gradient_evaluations_actual": 25344,
+    "gradient_evaluations_max": 786432,
+    "maximum_evaluations_per_target": 960,
+    "request_timeout_seconds": 900,
+    "wall_timeout_seconds": 6900,
+    "user_approved_wall_cap_seconds": 7200,
+    "wall_seconds": 1074.5255752779922,
+    "endpoint_inference_seconds": 1064.6823913109984,
+    "retry_policy": "none",
+    "comparison_passed": true,
+    "prediction_parity_passed": true,
+    "maximum_absolute_discrepancy": {
+      "logits": 0.0,
+      "probabilities": 0.0,
+      "representation": 0.0,
+      "attributions": 0.0
+    },
+    "atol": 0.00001,
+    "rtol": 0.00001,
+    "held_out_evaluation": false,
+    "endpoint_state_after_run": "paused",
+    "G1_established": false
   },
   "schema_version": 1,
   "source_development_revisions": {
     "expl_drift": "345ce131eec50eecd3b00d7ad6a90b1cc1e7caf8",
     "expl_drift_experiments": "b9d69a1430381cac986c642ab2a05af9e28fd019"
   },
-  "status": "endpoint fix committed/code-verified, immutable image configured and health-checked, endpoint paused; fresh qualification pending; G1-G5 not passed",
+  "status": "endpoint singleton fix passed a bounded YouTube development reproducibility comparison on the deployed image; endpoint paused; G1-G5 not passed",
   "verification": {
     "environment": {
       "fastapi": "0.115.12",

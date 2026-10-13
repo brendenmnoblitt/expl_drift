@@ -1353,7 +1353,41 @@
       "image_identity_semantics": "configured_not_attested",
       "health_wait_seconds": 130.86
     },
-    "new_endpoint_qualification": "not run; requires fresh explicit resource approval"
+    "new_endpoint_qualification": "bounded YouTube development comparison completed; exact cross-batch agreement on tested examples; G1 remains not established"
+  },
+  "qualification_run": {
+    "status": "completed",
+    "task": "youtube",
+    "role": "development",
+    "output": "../expl_drift_experiments/results/research-extension-data/remote-laya-qualification-v3/youtube-2026-10-13-singleton-b9d69a1",
+    "resource_approval_artifact": "../expl_drift_experiments/results/research-extension-data/remote-laya-qualification-v3/youtube-2026-10-13-singleton-b9d69a1/resource-approval.json",
+    "image_digest": "sha256:4c47ca3bb84b75f84c4a4a3bfbe8db79923205f58602ce34dbd6abe415077725",
+    "requests_max": 22,
+    "requests_completed": 22,
+    "requests_failed": 0,
+    "requests_not_sent": 0,
+    "gradient_evaluations_actual": 25344,
+    "gradient_evaluations_max": 786432,
+    "maximum_evaluations_per_target": 960,
+    "request_timeout_seconds": 900,
+    "wall_timeout_seconds": 6900,
+    "user_approved_wall_cap_seconds": 7200,
+    "wall_seconds": 1074.5255752779922,
+    "endpoint_inference_seconds": 1064.6823913109984,
+    "retry_policy": "none",
+    "comparison_passed": true,
+    "prediction_parity_passed": true,
+    "maximum_absolute_discrepancy": {
+      "logits": 0.0,
+      "probabilities": 0.0,
+      "representation": 0.0,
+      "attributions": 0.0
+    },
+    "atol": 0.00001,
+    "rtol": 0.00001,
+    "held_out_evaluation": false,
+    "endpoint_state_after_run": "paused",
+    "G1_established": false
   },
   "verification": {
     "actual_surfaces": [
@@ -1363,7 +1397,8 @@
       "four six-bank qualification CLI invocations on CUDA",
       "CPU selected-checkpoint replay",
       "CPU original failing real-sample extraction",
-      "saved-logit quality/label-only replay"
+      "saved-logit quality/label-only replay",
+      "HF L4 schema-2 YouTube development comparison on the fixed image; 22 requests completed with zero cross-batch signal discrepancy"
     ],
     "elapsed_seconds": 9.3,
     "passed": 184,
