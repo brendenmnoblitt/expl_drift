@@ -128,6 +128,19 @@
   "endpoint_fix": {
     "source_commit": "b9d69a1",
     "image_build_workflow": "https://github.com/brendenmnoblitt/expl_drift_experiments/actions/runs/38389756154",
+    "image_digest": "sha256:4c47ca3bb84b75f84c4a4a3bfbe8db79923205f58602ce34dbd6abe415077725",
+    "endpoint_update": "new image configured without changing L4 x1 capacity or scaling; readiness verified; endpoint paused afterward",
+    "health_check": {
+      "status": "ready",
+      "schema_version": "2",
+      "model_revision": "7b928d828b7b0e022f929d9bd2e44165aa270148",
+      "device": "cuda",
+      "gpu_name": "NVIDIA L4",
+      "torch_version": "2.14.1+cu130",
+      "configured_image_digest": "sha256:4c47ca3bb84b75f84c4a4a3bfbe8db79923205f58602ce34dbd6abe415077725",
+      "image_identity_semantics": "configured_not_attested",
+      "endpoint_state_after_health": "paused"
+    },
     "endpoint_tests_passed": 50,
     "ruff_check": "passed",
     "semantics": "singleton per-sample scoring, representation, and fixed-margin IG; complete request batch remains fingerprinted",
@@ -135,10 +148,10 @@
   },
   "schema_version": 1,
   "source_development_revisions": {
-    "expl_drift": "4d02cbaafe5bd5c8bef6309747bf9645ae094c77",
-    "expl_drift_experiments": "433fcba439677a4f080103b0d664c1c59c2b2a00"
+    "expl_drift": "d8d7538dbe220498fec548b5c0ad0c989d154f86",
+    "expl_drift_experiments": "6ade7168dfd8d09d3a2d3d6d9d1cd5dd4136f0b2"
   },
-  "status": "verified implementation increment; G1-G5 not passed",
+  "status": "endpoint fix committed/code-verified, immutable image configured and health-checked, endpoint paused; fresh qualification pending; G1-G5 not passed",
   "verification": {
     "environment": {
       "fastapi": "0.115.12",

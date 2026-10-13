@@ -1330,6 +1330,29 @@
       "G1_established": false
     },
     "image_build_workflow": "https://github.com/brendenmnoblitt/expl_drift_experiments/actions/runs/38389756154",
+    "image_digest": "sha256:4c47ca3bb84b75f84c4a4a3bfbe8db79923205f58602ce34dbd6abe415077725",
+    "endpoint_update": "configured on the existing endpoint; L4 x1 and min/max/scale-to-zero settings preserved; paused after readiness verification",
+    "health_check": {
+      "status": "ready",
+      "schema_version": "2",
+      "extraction_available": true,
+      "scientifically_qualified": false,
+      "model_repository": "convaiinnovations/laya",
+      "model_revision": "7b928d828b7b0e022f929d9bd2e44165aa270148",
+      "device": "cuda",
+      "gpu_name": "NVIDIA L4",
+      "cuda_version": "13.0",
+      "python_version": "3.12.15",
+      "sdk_version": "0.3.29",
+      "torch_version": "2.14.1+cu130",
+      "transformers_version": "5.19.0",
+      "implementation_sha256": "9223e66d1d3a17712bee2e9ff529fa6bb0581faead890f79fd100ac05a0d681e",
+      "checkpoint_artifact_sha256": "35b599d63dfa3816f29a8c1280499560e4950b5a5ebf6b75d1437a2769e1abd1",
+      "settings_sha256": "3a600a2df67fb0fe5c4cebd25b5c723a3b17cc2a7814ab7c06b1491d1c32e747",
+      "configured_image_digest": "sha256:4c47ca3bb84b75f84c4a4a3bfbe8db79923205f58602ce34dbd6abe415077725",
+      "image_identity_semantics": "configured_not_attested",
+      "health_wait_seconds": 130.86
+    },
     "new_endpoint_qualification": "not run; requires fresh explicit resource approval"
   },
   "verification": {
