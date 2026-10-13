@@ -86,9 +86,9 @@
     ],
     "G3": "requires G1/G2; no held-out model outcomes inspected",
     "G4": "requires G1/G2 and binary checkpoints; historical caches never reused",
-    "G5": "stable contracts/G2 prerequisite; no cutover, release, deployment, publication or paid jobs performed"
+    "G5": "stable contracts/G2 prerequisite; repository cutover and release remain unapproved; the approved feature-branch endpoint deployment and paid development attempt are recorded, with no main merge or paper-tag changes"
   },
-  "implementation_identity": "uncommitted implementation explicitly content-hashed; no primary run permitted",
+  "implementation_identity": "endpoint batch-invariance fix committed at b9d69a1; G1-G5 incomplete; no primary run permitted",
   "implementation_sha256": {
     "expl_drift": {
       "__init__.py": "5d655a726d97f8f123cdb5ecb81a679bdf72ac941548fa7ba2baf928e76f1436",
@@ -105,12 +105,12 @@
     "expl_drift_experiments": {
       "endpoint/scripts/smoke_container.py": "d54ffaae734c2017f0d1e0db7501c5fcb51d5a1a2c8578f5792703c8cdd619d0",
       "endpoint/src/expl_drift_endpoint/app.py": "297229a98563c42eb697e1bddfca888236218c7ed2e5f88338d48fd3d86e0bf9",
-      "endpoint/src/expl_drift_endpoint/contract.py": "925c5fbb06dc33d581896188b11459cc1d2ec76e7fc9f1ac430ac855a31e57b2",
-      "endpoint/src/expl_drift_endpoint/laya_adapter.py": "c1fb924c68445e3710d666736a367c886fe3dbf1787c275c977372cf39402af9",
-      "endpoint/src/expl_drift_endpoint/laya_attribution.py": "fa9131926714f945a86ff19e85d6ddb9a97649947c693ad954d5dd144727a3a9",
-      "endpoint/tests/conftest.py": "b77c424729a4098234262c45b8a6dda6a60e55487a0aa4cb577a8615d3034a60",
+      "endpoint/src/expl_drift_endpoint/contract.py": "9a86ec55dcd06c7951253e0cce71e0d967c876c2cfe885dca55e49f1e98e270c",
+      "endpoint/src/expl_drift_endpoint/laya_adapter.py": "32a75b2b314eadcad96508c2a4b288bbe180b95dd0d4025f5cd08730bf85bdde",
+      "endpoint/src/expl_drift_endpoint/laya_attribution.py": "92ff568ed3efae10e9e883f8d1880083b4c8465df9891ef760fc7e2ed1c1195e",
+      "endpoint/tests/conftest.py": "35ad24a37a59643cc16af8b5ae8de1fc94539e2ee24bb707f7882191d585c7d3",
       "endpoint/tests/test_host_client.py": "ef2b4b12d6d5c03c3e5bb14922e33a8115554ea02c1d9440e016181cdc09a805",
-      "endpoint/tests/test_laya_adapter.py": "9190d3a389371babd6d05a82a2bf9f44b0b0f510d08dfc30c0762d5edf597e17",
+      "endpoint/tests/test_laya_adapter.py": "0df31293ef76cfbedc05efa6fe50a8c602f1193ee7c08a2889fa7a7c0888fd64",
       "endpoint/tests/test_laya_attribution.py": "16195b7fb9eaf7f3d9b8aac6bea438f422e2b8194fd813565c899075eea978c6",
       "endpoint/tests/test_laya_experiment_runner.py": "73129c9a8136efc4ba657ab6b594f402e27710786cb670490cae79dba5b2576e",
       "endpoint/tests/test_service.py": "15022a5a334a460838174b5e1d8e2f897426317161c04a6166f466ba4b8901de",
@@ -124,6 +124,14 @@
       "tests/test_reference_adapter.py": "fe4866871d59cdbb58246ddf31bb7aeae394c88047cd09483514e8b66160becc",
       "tests/test_research_extension_data.py": "52c21a9c11bade6d4707ace48363e4cde5a75b48470484a8bb66fda7b6e99667"
     }
+  },
+  "endpoint_fix": {
+    "source_commit": "b9d69a1",
+    "image_build_workflow": "https://github.com/brendenmnoblitt/expl_drift_experiments/actions/runs/38389756154",
+    "endpoint_tests_passed": 50,
+    "ruff_check": "passed",
+    "semantics": "singleton per-sample scoring, representation, and fixed-margin IG; complete request batch remains fingerprinted",
+    "new_qualification": "not run; fresh explicit resource approval required"
   },
   "schema_version": 1,
   "source_development_revisions": {

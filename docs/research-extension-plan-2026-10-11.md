@@ -97,6 +97,7 @@ If the Oct 18 gate fails, publish the exact failed prerequisite and revised comp
 - [ ] Measure score/prediction/attribution reproducibility across batch sizes 1, 4, and 8, repeated requests, and singleton attribution versus batched scoring. Set numerical tolerances before the comparison; if interchangeability fails, fix the path or bind cache identity to the exact batch context and narrow the stated semantics.
 - [ ] Apply equivalent target/alignment/numerical checks to BERT and GPT-2 extraction. Completeness is necessary but not a proof of explanation faithfulness; include controlled signed and token-permutation checks appropriate to the declared representation.
 - [ ] Freeze a single endpoint image/runtime for each model's primary study. No mixed-image continuation. A changed implementation starts a new qualified revision and invalidates affected cached signals.
+- Current endpoint fix (`expl_drift_experiments` commit `b9d69a1`): transport batch size no longer changes model execution context; scoring, representation, and fixed-margin IG use singleton collation per sample. Endpoint tests pass (50); the new image and fresh remote qualification are pending.
 - [ ] Measure GPU-hour estimates from representative samples, including slow/high-evaluation and truncated cases. Record the spending ceiling, concurrency, timeouts, failure accounting, and shutdown procedure before primary runs.
 
 ### G1 acceptance

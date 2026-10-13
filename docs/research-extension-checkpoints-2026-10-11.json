@@ -1300,6 +1300,38 @@
       }
     }
   },
+  "endpoint_fix": {
+    "source_commit": "b9d69a1",
+    "source_sha256": {
+      "endpoint/src/expl_drift_endpoint/contract.py": "9a86ec55dcd06c7951253e0cce71e0d967c876c2cfe885dca55e49f1e98e270c",
+      "endpoint/src/expl_drift_endpoint/laya_adapter.py": "32a75b2b314eadcad96508c2a4b288bbe180b95dd0d4025f5cd08730bf85bdde",
+      "endpoint/src/expl_drift_endpoint/laya_attribution.py": "92ff568ed3efae10e9e883f8d1880083b4c8465df9891ef760fc7e2ed1c1195e",
+      "endpoint/tests/conftest.py": "35ad24a37a59643cc16af8b5ae8de1fc94539e2ee24bb707f7882191d585c7d3",
+      "endpoint/tests/test_laya_adapter.py": "0df31293ef76cfbedc05efa6fe50a8c602f1193ee7c08a2889fa7a7c0888fd64"
+    },
+    "verification": {
+      "endpoint_tests_passed": 50,
+      "ruff_check": "passed"
+    },
+    "semantics": "Per-sample singleton execution for scoring, representations, and fixed-margin IG; transport request fingerprint still includes the full ordered request batch.",
+    "prior_attempt": {
+      "source_commit": "e9850308794b938c2423e5d0f8eb1241b0cf73a1",
+      "image_digest": "sha256:80419fbb20ea42e6c8c1cafb29988c329c7c3b221dc6c6bb142abe8cfa2f49b5",
+      "artifacts": "../expl_drift_experiments/results/research-extension-data/remote-laya-qualification-v2/youtube-2026-10-13/",
+      "requests_completed": 20,
+      "request_21": "900-second read timeout; no retry",
+      "request_22": "not sent",
+      "cross_batch_max_absolute_attribution_difference": 0.04599848389625549,
+      "cross_batch_tolerance": {
+        "atol": 1e-05,
+        "rtol": 1e-05
+      },
+      "qualification_report_written": false,
+      "G1_established": false
+    },
+    "image_build_workflow": "https://github.com/brendenmnoblitt/expl_drift_experiments/actions/runs/38389756154",
+    "new_endpoint_qualification": "not run; requires fresh explicit resource approval"
+  },
   "verification": {
     "actual_surfaces": [
       "public AG News CLI including whole-group 20-window scheduling",
