@@ -132,7 +132,7 @@
   },
   "core_handoff_files_sha256": {
     "TODO.md": "f22155b8094e9bdb1caf157f1d17da391d2c87904f3a7c3c7137978d1f8a9e01",
-    "docs/research-extension-plan-2026-10-11.md": "7aaf400dd583f9c10e4e59bdadcaeacae53230bad7dee71b4c213bf1540c9a54"
+    "docs/research-extension-plan-2026-10-11.md": "fafb0451fff6263c2e54c1da11c87c6d7bc04f38bf96b49fed313ed9cf969f39"
   },
   "corpora": {
     "ag_news": {
@@ -1353,7 +1353,7 @@
       "image_identity_semantics": "configured_not_attested",
       "health_wait_seconds": 130.86
     },
-    "new_endpoint_qualification": "bounded YouTube development comparison completed; exact cross-batch agreement on tested examples; G1 remains not established"
+    "new_endpoint_qualification": "bounded YouTube and AG News development comparisons passed batch stability separately; checkpoint-artifact fingerprints differ across restarts, so same-runtime cross-task qualification and G1 remain unestablished"
   },
   "qualification_run": {
     "status": "completed",
@@ -1389,6 +1389,43 @@
     "endpoint_state_after_run": "paused",
     "G1_established": false
   },
+  "ag_news_qualification_run": {
+    "status": "completed",
+    "task": "ag_news",
+    "role": "development",
+    "output": "../expl_drift_experiments/results/research-extension-data/remote-laya-qualification-v3/ag-news-2026-10-13-singleton-b9d69a1",
+    "resource_approval_artifact": "../expl_drift_experiments/results/research-extension-data/remote-laya-qualification-v3/ag-news-2026-10-13-singleton-b9d69a1/resource-approval.json",
+    "image_digest": "sha256:4c47ca3bb84b75f84c4a4a3bfbe8db79923205f58602ce34dbd6abe415077725",
+    "checkpoint_artifact_sha256": "f81510fe53d225e1553f302b08fc724752b1c535cc6c0325320dd33dcb7f3c1a",
+    "youtube_checkpoint_artifact_sha256": "35b599d63dfa3816f29a8c1280499560e4950b5a5ebf6b75d1437a2769e1abd1",
+    "same_checkpoint_artifact_as_youtube": false,
+    "requests_max": 66,
+    "requests_completed": 66,
+    "requests_failed": 0,
+    "requests_not_sent": 0,
+    "gradient_evaluations_actual": 47232,
+    "gradient_evaluations_max": 2359296,
+    "maximum_evaluations_per_target": 1056,
+    "request_timeout_seconds": 900,
+    "wall_timeout_seconds": 6900,
+    "user_approved_wall_cap_seconds": 7200,
+    "wall_seconds": 2081.7959138669976,
+    "endpoint_inference_seconds": 2052.5653135459725,
+    "retry_policy": "none",
+    "comparison_passed": true,
+    "prediction_parity_passed": true,
+    "maximum_absolute_discrepancy": {
+      "logits": 0.0,
+      "probabilities": 0.0,
+      "representation": 0.0,
+      "attributions": 0.0
+    },
+    "atol": 0.00001,
+    "rtol": 0.00001,
+    "held_out_evaluation": false,
+    "endpoint_state_after_run": "paused",
+    "G1_established": false
+  },
   "verification": {
     "actual_surfaces": [
       "public AG News CLI including whole-group 20-window scheduling",
@@ -1398,7 +1435,7 @@
       "CPU selected-checkpoint replay",
       "CPU original failing real-sample extraction",
       "saved-logit quality/label-only replay",
-      "HF L4 schema-2 YouTube development comparison on the fixed image; 22 requests completed with zero cross-batch signal discrepancy"
+      "HF L4 schema-2 batch-stability comparisons for YouTube and AG News development data on the fixed image; each passed independently, but their checkpoint-artifact fingerprints differed"
     ],
     "elapsed_seconds": 9.3,
     "passed": 184,

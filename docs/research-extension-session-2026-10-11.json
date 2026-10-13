@@ -144,7 +144,7 @@
     "endpoint_tests_passed": 50,
     "ruff_check": "passed",
     "semantics": "singleton per-sample scoring, representation, and fixed-margin IG; complete request batch remains fingerprinted",
-    "new_qualification": "bounded YouTube development comparison completed with exact agreement across tested batches; G1 remains not established"
+    "new_qualification": "bounded YouTube and AG News development comparisons passed batch reproducibility separately; checkpoint-artifact fingerprints differ, so they do not establish same-runtime cross-task qualification or G1"
   },
   "qualification_run": {
     "status": "completed",
@@ -179,12 +179,48 @@
     "endpoint_state_after_run": "paused",
     "G1_established": false
   },
+  "ag_news_qualification_run": {
+    "status": "completed",
+    "task": "ag_news",
+    "role": "development",
+    "output": "../expl_drift_experiments/results/research-extension-data/remote-laya-qualification-v3/ag-news-2026-10-13-singleton-b9d69a1",
+    "resource_approval_artifact": "../expl_drift_experiments/results/research-extension-data/remote-laya-qualification-v3/ag-news-2026-10-13-singleton-b9d69a1/resource-approval.json",
+    "image_digest": "sha256:4c47ca3bb84b75f84c4a4a3bfbe8db79923205f58602ce34dbd6abe415077725",
+    "checkpoint_artifact_sha256": "f81510fe53d225e1553f302b08fc724752b1c535cc6c0325320dd33dcb7f3c1a",
+    "prior_youtube_checkpoint_artifact_sha256": "35b599d63dfa3816f29a8c1280499560e4950b5a5ebf6b75d1437a2769e1abd1",
+    "same_checkpoint_artifact_as_youtube": false,
+    "requests_max": 66,
+    "requests_completed": 66,
+    "requests_failed": 0,
+    "requests_not_sent": 0,
+    "gradient_evaluations_actual": 47232,
+    "gradient_evaluations_max": 2359296,
+    "maximum_evaluations_per_target": 1056,
+    "request_timeout_seconds": 900,
+    "wall_timeout_seconds": 6900,
+    "wall_seconds": 2081.7959138669976,
+    "endpoint_inference_seconds": 2052.5653135459725,
+    "retry_policy": "none",
+    "comparison_passed": true,
+    "prediction_parity_passed": true,
+    "maximum_absolute_discrepancy": {
+      "logits": 0.0,
+      "probabilities": 0.0,
+      "representation": 0.0,
+      "attributions": 0.0
+    },
+    "atol": 0.00001,
+    "rtol": 0.00001,
+    "held_out_evaluation": false,
+    "endpoint_state_after_run": "paused",
+    "G1_established": false
+  },
   "schema_version": 1,
   "source_development_revisions": {
     "expl_drift": "345ce131eec50eecd3b00d7ad6a90b1cc1e7caf8",
     "expl_drift_experiments": "b9d69a1430381cac986c642ab2a05af9e28fd019"
   },
-  "status": "endpoint singleton fix passed a bounded YouTube development reproducibility comparison on the deployed image; endpoint paused; G1-G5 not passed",
+  "status": "bounded YouTube and AG News development batch checks passed separately; checkpoint-artifact hashes differ across restarts and outputs are not combined; endpoint paused; G1-G5 remain open",
   "verification": {
     "environment": {
       "fastapi": "0.115.12",
