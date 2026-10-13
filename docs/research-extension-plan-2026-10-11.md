@@ -237,4 +237,18 @@ Start layout/packaging preparation after G2. Perform the final cutover on Oct 28
 4. Profile representative real extraction and count unique signal-bank work for the complete proposed matrix.
 5. After G1, extract the designated reference/tuning banks, fit and save measurement state, qualify the quality-event null behavior, and establish the separate false-alarm evidence budget. Freeze B versus B + A, the written protocol and resource approval at G2 only after those prerequisites pass; keep held-out evaluation sealed until then.
 
-Implementation belongs in the current development branches until the planned cutover. This document authorizes planning only; no new deployment, paid extraction, repository publication, or legacy-result replacement has been performed.
+At plan drafting on 2026-10-11, this document authorized planning only; no new
+deployment, paid extraction, repository publication, or legacy-result replacement
+had been performed then. Later resource decisions and results are recorded below.
+
+## Execution update — 2026-10-13
+
+After explicit resource approval, the existing HF Laya endpoint was updated to
+an immutable schema-2 image and its pinned runtime readiness was verified. The
+bounded YouTube development attempt persisted 20 completed requests; request 21
+timed out at its 900-second limit. No retry, resume, qualification report, or G1
+pass resulted. The endpoint was paused, and G1–G5 remain open. Full run evidence:
+`../../expl_drift_experiments/results/research-extension-data/remote-laya-qualification-v2/youtube-2026-10-13/`.
+Any further extraction requires a fresh resource decision and output directory.
+No held-out model outcomes were evaluated, and no null-budget or sampling
+amendment was applied.
